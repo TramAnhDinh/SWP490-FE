@@ -15,7 +15,7 @@ import DesignerPage from './pages/DesignerPage';
 import Checkout from './pages/Checkout';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import StaffPage from "./pages/StaffPage";
+import AdminPage from "./pages/AdminPage";
 import MemberPage from './pages/MemberPage';
 import OrderDetail from './pages/OrderDetail';
 
@@ -105,10 +105,10 @@ const AppContent = () => {
           <Route path="/blog/b/:id" element={<HandDetail />} />
           {/* <Route path="/order-detail" element={<OrderDetail />} /> */}
 
-          {/* Protected routes for Staff (roleId = 2) */}
-          <Route path="/staff" element={<ProtectedRoute allowedRoles={[2]}><StaffPage /></ProtectedRoute>} />
-          <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} />
-          <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderDetail /></ProtectedRoute>} />
+          {/* Protected routes for Admin (roleId = "ROLE_ADMIN") */}
+          <Route path="/admin" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AdminPage /></ProtectedRoute>} />
+          <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderTracking /></ProtectedRoute>} />
+          <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderDetail /></ProtectedRoute>} />
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[2]}><MemberPage /></ProtectedRoute>} /> */}
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
 

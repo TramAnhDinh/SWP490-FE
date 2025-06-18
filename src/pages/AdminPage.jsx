@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaPlus, FaSearch } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
 
-const StaffPage = () => {
+const AdminPage = () => {
     const dispatch = useDispatch();
     const { items } = useSelector((state) => state.products);
     const userRole = useSelector((state) => state.auth?.user?.role || "guest");
@@ -171,7 +171,7 @@ const StaffPage = () => {
                                     ))}
                                 </select>
                             </div>
-                            {userRole !== "staff" && (
+                            {userRole !== "admin" && (
                                 <button
                                     onClick={openAddModal}
                                     className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
@@ -193,7 +193,7 @@ const StaffPage = () => {
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tồn kho</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mô tả</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Danh mục</th>
-                                        {userRole !== "staff" && (
+                                        {userRole !== "admin" && (
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
                                         )}
                                     </tr>
@@ -220,7 +220,7 @@ const StaffPage = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     {categories.find(cat => cat.categoryId === product.categoryId)?.categoryName || 'Chưa phân loại'}
                                                 </td>
-                                                {userRole !== "staff" && (
+                                                {userRole !== "admin" && (
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         <div className="flex items-center gap-2">
                                                             <button
@@ -359,4 +359,4 @@ const StaffPage = () => {
     );
 };
 
-export default StaffPage;
+export default AdminPage;

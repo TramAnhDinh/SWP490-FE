@@ -49,9 +49,9 @@ const OrderTracking = () => {
       console.log("Orders API Response:", ordersResponse.data);
 
       if (ordersResponse.data?.$values) {
-        // Lọc đơn hàng theo userId nếu không phải staff
+        // Lọc đơn hàng theo userId nếu không phải admin
         let orders = ordersResponse.data.$values;
-        if (role !== "staff") {
+        if (role !== "Admin") {
           orders = orders.filter(order => {
             const customizeProduct = customizeProducts.find(cp => cp.customizeProductId === order.customizeProductId);
             return customizeProduct?.userId === Number(userId);

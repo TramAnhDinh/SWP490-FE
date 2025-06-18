@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AdminPage from "./pages/AdminPage";
-import StaffPage from "./pages/StaffPage";
+import AdminPage from "./pages/AdminPage";
 import MemberPage from "./pages/MemberPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -34,25 +34,25 @@ const AppRouter = () => {
 
         {/* Phân quyền truy cập */}
         <Route
-          path="/admin"
+          path="/Admin"
           element={
-            <ProtectedRoute allowedRoles={[1]}>
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
               <AdminPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/staff"
+          path="/manager"
           element={
-            <ProtectedRoute allowedRoles={[2]}>
-              <StaffPage />
+            <ProtectedRoute allowedRoles={["ROLE_MANAGER"]}>
+              <AdminPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/member"
+          path="/designer"
           element={
-            <ProtectedRoute allowedRoles={[3]}>
+            <ProtectedRoute allowedRoles={["ROLE_DESIGNER"]}>
               <MemberPage />
             </ProtectedRoute>
           }

@@ -238,7 +238,7 @@ const Header = () => {
         {/* Dropdown Menu */}
         {menuOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-lg z-50">
-            {role !== "staff" && (
+            {role !== "Admin" && (
               <>
                 <Link to="/" className="block px-4 py-2 hover:bg-gray-800">TRANG CHỦ</Link>
 
@@ -298,9 +298,9 @@ const Header = () => {
 
       {/* Menu trên PC */}
       <nav className="hidden md:flex gap-6 items-center">
-        {role === "staff" ? (
+        {role === "Admin" ? (
           <>
-            <Link to="/staff" className="hover:text-orange-400 text-xl">TRANG NHÂN VIÊN</Link>
+            <Link to="/Admin" className="hover:text-orange-400 text-xl">TRANG NHÂN VIÊN</Link>
             <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link>
           </>
         ) : (

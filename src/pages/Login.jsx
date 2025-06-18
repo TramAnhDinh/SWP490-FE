@@ -293,13 +293,13 @@ const Login = () => {
         }
       );
 
-
-
       const token = response.data?.token || response.data; // tùy API trả về
       const tokenParts = token.split(".");
       const payload = JSON.parse(atob(tokenParts[1]));
       // const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
       const role = payload.role;
+      console.log("Decoded payload:", payload);
+
 
       dispatch(setUser({ token, role, username }));
       dispatch(loadUserCart());
@@ -308,7 +308,7 @@ const Login = () => {
 
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      if (role === "staff") {
+      if (role === "Admin") {
         navigate("/order-tracking");
       } else {
         navigate("/");
