@@ -52,13 +52,13 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   let roleId;
   switch(role) {
     case "admin":
-      roleId = 1;
+      roleId = "ROLE_ADMIN";
       break;
-    case "staff":
-      roleId = 2;
+    case "manager":
+      roleId = "ROLE_MANAGER";
       break;
-    case "member":
-      roleId = 3;
+    case "designer":
+      roleId = "ROLE_DESIGNER";
       break;
     default:
       roleId = 0; // Không có quyền
