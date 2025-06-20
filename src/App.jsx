@@ -60,6 +60,12 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     case "designer":
       roleId = "ROLE_DESIGNER";
       break;
+    case "sales":
+      roleId = "ROLE_SALES";
+      break;
+    case "technician":
+      roleId = "ROLE_TECHNICIAN";
+      break;
     default:
       roleId = 0; // Không có quyền
   }

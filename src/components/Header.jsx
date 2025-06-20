@@ -271,14 +271,14 @@ const Header = () => {
                 </div>
 
                 <Link to="/lien-he" className="block px-4 py-2 hover:bg-gray-800">LIÊN HỆ</Link>
-                <Link to="/cart" className="block px-4 py-2 hover:bg-gray-800 flex items-center">
+                {/* <Link to="/cart" className="block px-4 py-2 hover:bg-gray-800 flex items-center">
                   <ShoppingCart />
                   {totalItems > 0 && (
                     <span className="ml-2 bg-red-500 text-white rounded-full text-xs px-2">
                       {totalItems}
                     </span>
                   )}
-                </Link>
+                </Link> */}
               </>
             )}
 
@@ -342,14 +342,14 @@ const Header = () => {
             </div>
 
             <Link to="/lien-he" className="hover:text-orange-400 text-xl">LIÊN HỆ</Link>
-            <Link to="/cart" className="hover:text-orange-400 relative">
+            {/* <Link to="/cart" className="hover:text-orange-400 relative"> */}
               {/* <ShoppingCart /> */}
-              {cartItemCount > 0 && (
+              {/* {cartItemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-2">
                   {cartItemCount}
                 </span>
-              )}
-            </Link>
+              )} */}
+            {/* </Link> */}
           </>
         )}
 

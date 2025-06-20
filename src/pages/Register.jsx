@@ -859,6 +859,10 @@ const RegisterLogin = () => {
         return "Quản lý";
       case "ROLE_DESIGNER":
         return "Thiết kế viên";
+      case "ROLE_SALES":
+        return "Nhân viên bán hàng";
+      case "ROLE_TECHNICIAN":
+        return "Kỹ thuật viên"; 
       default:
         return role;
     }
@@ -878,9 +882,10 @@ const RegisterLogin = () => {
     console.log("ROLE hiện tại:", role);
 
     if (role === "ROLE_ADMIN" || role === "Admin") {
-      setAvailableRoles(["ROLE_MANAGER", "ROLE_DESIGNER"]);
+      setAvailableRoles(["ROLE_MANAGER", "ROLE_DESIGNER", "ROLE_SALES", "ROLE_TECHNICIAN"]);
     } else if (role === "ROLE_MANAGER" || role === "Manager") {
-      setAvailableRoles(["ROLE_DESIGNER"]);
+      // setAvailableRoles(["ROLE_DESIGNER"]);
+      setAvailableRoles([]);
     } else {
       setAvailableRoles([]); // Không có quyền
     }
