@@ -39,6 +39,7 @@ import ProfilePage from './pages/ProfilePage';
 import PaymentCallback from "./pages/PaymentCallback";
 import CheckPaymentSuccess from "./pages/CheckPaymentSucces";
 import CheckPaymentFailed from "./pages/CheckPaymentFaild";
+import ChangePassword from "./pages/ChangePassword";
 
 // Component bảo vệ route dựa trên role
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -109,6 +110,7 @@ const AppContent = () => {
           <Route path="/blog/b" element={<HandPage />} />
           <Route path="/blog/b/:id" element={<HandDetail />} />
           <Route path="/blog/b/:id" element={<HandDetail />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           {/* <Route path="/order-detail" element={<OrderDetail />} /> */}
 
           {/* Protected routes for Admin (roleId = "ROLE_ADMIN") */}

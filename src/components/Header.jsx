@@ -364,7 +364,9 @@ const Header = () => {
               {role === "ROLE_MANAGER" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
               {role === "ROLE_DESIGNER" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
               {/* Nút Đăng Ký hiện sau khi đã login */}
-              <Link to="/register" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG KÝ</Link>
+              <Link to="/register" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG KÝ TÀI KHOẢN CHO NHÂN VIÊN</Link>
+              <Link to="/change-password" className="block px-4 py-2 hover:bg-gray-800"> ĐỔI MẬT KHẨU</Link>
+
               <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-800">ĐĂNG XUẤT</button>
             </div>
           </div>
