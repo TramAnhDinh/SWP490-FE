@@ -4,7 +4,7 @@ const PricingClass = () => {
     return (
       <div className="bg-yellow-100 p-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-center">Bảng Giá Xe Hơi</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">Bảng Giá Kính Xe Hơi</h2>
           <div className="overflow-x-auto">
             <table className="table-auto w-full mb-8">
               <thead>
@@ -21,8 +21,8 @@ const PricingClass = () => {
                   ["Kính sườn trước","N 30 / N 20", "N 15", "ICE 40 / ICE 20"],
                   ["Kính sườn giữa","N 30 / N 20", "N 15", "ICE 40 / ICE 20"],
                   ["Kính sườn sau","N 30 / N 20", "N 15", "ICE 40 / ICE 20"],
-                  ["SEDAN","N 30 / N 20", "N 15", "ICE 40 / ICE 20"],
-                  ["Kính lưng","5.500.000", "8.000.000", "11.000.000"],
+                  ["Kính lưng","N 30 / N 20", "N 15", "ICE 40 / ICE 20"],
+                  ["SEDAN","5.500.000", "8.000.000", "11.000.000"],
                   ["SUV","6.000.000", "9.000.000", "12.000.000"]
                 ].map((row, index) => (
                   <tr key={index} className="odd:bg-gray-200">
@@ -34,32 +34,37 @@ const PricingClass = () => {
               </tbody>
             </table>
   
-            {/* <h2 className="text-2xl font-bold mb-4 text-center">Bảng Giá Áo Polo Basic</h2>
+            <h2 className="text-2xl font-bold mb-4 text-center">Bảng Giá Decal Xe Hơi</h2>
             <table className="table-auto w-full">
               <thead>
                 <tr className="bg-yellow-200">
-                  <th className="p-2 border border-white">Số lượng</th>
-                  <th className="p-2 border border-white">Cá sấu poly</th>
-                  <th className="p-2 border border-white">Cá sấu 65% Cotton</th>
-                  <th className="p-2 border border-white">Cá sấu 100% Cotton</th>
-                  <th className="p-2 border border-white">Cá sấu Cafe</th>
+                  <th className="p-2 border border-white">Chất liệu</th>
+                  <th className="p-2 border border-white">Xe cỡ nhỏ, Hatchback</th>
+                  <th className="p-2 border border-white">Xe Sedan</th>
+                  <th className="p-2 border border-white">Xe SUV	</th>
+                  <th className="p-2 border border-white">Xe bán tải</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  ["21-30", "175.000", "200.000", "230.000", "250.000"],
-                  ["31-40", "165.000", "190.000", "220.000", "240.000"],
-                  ["41-50", "155.000", "180.000", "210.000", "230.000"],
-                  ["51-60", "145.000", "170.000", "200.000", "220.000"]
+                  ["Thông dụng", "9.000.000", "10.000.000", "11.000.000", "12.000.000"],
+                  ["Cao cấp", "12.000.000", "15.000.000 - 17.000.000", "17.000.000 - 20.000.000", "17.000.000 - 20.000.000"],
+                  ["Siêu cấp", "25.000.000", "30.000.000 - 35.000.000", "30.000.000 - 35.000.000", "30.000.000 - 35.000.000"]
+                  // ["Báo giá có thể thay đổi theo giá vật liệu và yêu cầu, quý khách có thể liên hệ trực tiếp với chúng tôi"]
                 ].map((row, index) => (
                   <tr key={index} className="odd:bg-gray-200">
                     {row.map((cell, i) => (
                       <td key={i} className="p-2 border border-white text-center">{cell}</td>
                     ))}
-                  </tr>
+                  </tr> 
                 ))}
+                <tr className="bg-yellow-100">
+                  <td colSpan={5} className="p-2 border border-white text-center font-medium">
+                    Báo giá có thể thay đổi theo giá vật liệu và yêu cầu, quý khách có thể liên hệ trực tiếp với chúng tôi
+                  </td>
+                </tr>
               </tbody>
-            </table> */}
+            </table>
        </div>
       </div>
     </div>
