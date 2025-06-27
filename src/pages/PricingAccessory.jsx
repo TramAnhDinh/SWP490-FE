@@ -33,7 +33,7 @@ const PricingAccessory = () => {
           </tbody>
         </table>
         <div className="mt-4 text-yellow-800">
-          <h2 className="text-3xl font-bold text-center text-yellow-800 mb-6">BẢNG GIÁ PHỤ KIỆN XE GA</h2>
+        <h2 className="text-3xl font-bold text-center text-yellow-800 mb-6">BẢNG GIÁ PHỤ KIỆN XE GA</h2>
         <table className="w-full border border-yellow-800">
           <thead>
             <tr className="bg-yellow-400 text-yellow-900">
@@ -52,6 +52,36 @@ const PricingAccessory = () => {
               ["Thảm lót chân", "Bảo vệ sàn xe, chống trơn trượt, tăng tính thẩm mỹ cho khu vực để chân", "350.000đ"],
               ["Ốp két tản nhiệt", "Trang trí, bảo vệ két nước tản nhiệt, giúp xe nổi bật hơn và tránh va quẹt nhẹ", "220.000đ"],
               ["Ốp pô", "Trang trí và bảo vệ ống pô, tạo điểm nhấn thể thao cho phần đuôi xe", "170.000đ"]
+            ].map((row, index) => (
+              <tr key={index} className={index % 2 === 0 ? "bg-yellow-100" : "bg-white"}>
+                {row.map((cell, i) => (
+                  <td key={i} className="p-2 border border-yellow-800 text-center">{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>
+        <div>
+        <h2 className="text-3xl font-bold text-center text-yellow-800 mb-6">BẢNG GIÁ PHỤ KIỆN XE HƠI</h2>
+        <table className="w-full border border-yellow-800">
+          <thead>
+            <tr className="bg-yellow-400 text-yellow-900">
+              <th className="p-2 border border-yellow-800">Phụ Kiện</th>
+              <th className="p-2 border border-yellow-800">Tính Năng</th>
+              <th className="p-2 border border-yellow-800">Giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Thảm lót sàn ô tô", "Chống bám bẩn, dễ vệ sinh, tăng thẩm mỹ", "300.000đ - 1.500.000đ"],
+              ["Cảm biến áp suất lốp", " Theo dõi và cảnh báo áp suất lốp", "1.200.000đ - 2.500.000đ"],
+              ["Bọc vô lăng	", "Chống trơn, êm tay, tăng độ bám", "150.000đ - 500.000đ"],
+              ["Ốp nắp xăng ô tô", "Trang trí và bảo vệ nắp bình xăng", "100.000đ - 300.000đ"],
+              ["Ốp gương chiếu hậu", "Bảo vệ và trang trí gương chiếu hậu", "200.000đ - 500.000đ"],
+              ["Ốp tay mở cửa ô tô", "Trang trí, chống trầy tay nắm cửa", "200.000đ - 600.000đ"],
+              ["Bọc ghế da ô tô", "Tăng tính thẩm mỹ, bảo vệ ghế xe", "1.500.000đ - 5.000.000đ"],
+              ["Bơm lốp ô tô mini", "Dùng bơm lốp khẩn cấp khi lốp non", "400.000đ - 1.200.000đ"]
             ].map((row, index) => (
               <tr key={index} className={index % 2 === 0 ? "bg-yellow-100" : "bg-white"}>
                 {row.map((cell, i) => (
