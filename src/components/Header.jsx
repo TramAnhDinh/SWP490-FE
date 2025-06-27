@@ -325,7 +325,7 @@ const Header = () => {
               <div className="absolute left-0 top-full max-w-64 w-56 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
                 <Link to="/design/bang-gia-dong-phuc" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DECAL XE MÁY</Link>
                 <Link to="/design/bang-gia-ao-lop" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DECAL XE HƠI</Link>
-                <Link to="/design/bang-gia-phu-kien" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ PHỤ KIỆN</Link>
+                {/* <Link to="/design/bang-gia-phu-kien" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ PHỤ KIỆN</Link> */}
                 <Link to="/design/bang-gia-dich-vu" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DỊCH VỤ</Link>
               </div>
             </div>

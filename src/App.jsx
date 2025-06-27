@@ -23,7 +23,7 @@ import NewProductCarousel from './components/NewProductCarousel';
 import ContactPage from './pages/ContactPage'; 
 import PricingTable from './pages/PricingTable';
 import PricingClass from './pages/PricingClass';
-import PricingAccessory from './pages/PricingAccessory';
+// import PricingAccessory from './pages/PricingAccessory';
 import PricingService from './pages/PricingService';
 import DesignSamples from './pages/DesignSamples';
 import CheckoutConfirmation from './pages/CheckoutConfirmation';
@@ -101,7 +101,7 @@ const AppContent = () => {
           <Route path="/design/mau-co-san" element={<DesignSamples/>}/>
           <Route path="/design/bang-gia-dong-phuc" element={<PricingTable />} />
           <Route path="/design/bang-gia-ao-lop" element={<PricingClass />} />
-          <Route path="/design/bang-gia-phu-kien" element={<PricingAccessory />} />
+          {/* <Route path="/design/bang-gia-phu-kien" element={<PricingAccessory />} /> */}
           <Route path="/design/bang-gia-dich-vu" element={<PricingService />} />
           <Route path="/blog" element={<InfoPage />} />
           <Route path="/blog/:id" element={<ArticleDetail />} />
