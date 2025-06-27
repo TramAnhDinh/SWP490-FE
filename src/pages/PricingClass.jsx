@@ -50,7 +50,6 @@ const PricingClass = () => {
                   ["Thông dụng", "9.000.000", "10.000.000", "11.000.000", "12.000.000"],
                   ["Cao cấp", "12.000.000", "15.000.000 - 17.000.000", "17.000.000 - 20.000.000", "17.000.000 - 20.000.000"],
                   ["Siêu cấp", "25.000.000", "30.000.000 - 35.000.000", "30.000.000 - 35.000.000", "30.000.000 - 35.000.000"]
-                  // ["Báo giá có thể thay đổi theo giá vật liệu và yêu cầu, quý khách có thể liên hệ trực tiếp với chúng tôi"]
                 ].map((row, index) => (
                   <tr key={index} className="odd:bg-gray-200">
                     {row.map((cell, i) => (

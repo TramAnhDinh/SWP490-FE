@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import xx from "../assets/xx.jpg";
 
-const RegisterLogin = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -110,7 +110,7 @@ const RegisterLogin = () => {
         <div className="w-full md:w-1/2 px-4 md:px-12">
           <h2 className="font-bold text-4xl text-[#915621]">Đăng ký</h2>
           <p className="text-lg mt-4 text-[#915621]">
-            Tạo tài khoản theo phân quyền
+            Tạo tài khoản theo phân quyền admin
           </p>
 
           {availableRoles.length === 0 ? (
@@ -178,7 +178,7 @@ const RegisterLogin = () => {
   );
 };
 
-export default RegisterLogin;
+export default Register;
 
 
 // import React, { useState, useEffect } from "react";
