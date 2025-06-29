@@ -301,6 +301,7 @@ const Header = () => {
         {role === "Admin" ? (
           <>
             <Link to="/Admin" className="hover:text-orange-400 text-xl">TRANG NHÂN VIÊN</Link>
+            <Link to="/store" className="hover:text-orange-400 text-xl">THEO DÕI CÁC CỬA HÀNG</Link>
             <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link>
           </>
         ) : (
@@ -330,7 +331,7 @@ const Header = () => {
               </div>
             </div>
 
-            <div className="relative group">
+            {/* <div className="relative group">
               <button className="hover:text-orange-400 text-xl flex items-center">
                 BLOG <ChevronDown className="ml-2" />
               </button>
@@ -339,7 +340,7 @@ const Header = () => {
                 <Link to="/blog/class" className="block px-4 py-2 hover:bg-gray-800">DECAL</Link>
                 <Link to="/blog/b" className="block px-4 py-2 hover:bg-gray-800">CẨM NANG</Link>
               </div>
-            </div>
+            </div> */}
 
             <Link to="/lien-he" className="hover:text-orange-400 text-xl">LIÊN HỆ</Link>
             {/* <Link to="/cart" className="hover:text-orange-400 relative"> */}

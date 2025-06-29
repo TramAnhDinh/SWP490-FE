@@ -40,6 +40,7 @@ import PaymentCallback from "./pages/PaymentCallback";
 import CheckPaymentSuccess from "./pages/CheckPaymentSucces";
 import CheckPaymentFailed from "./pages/CheckPaymentFaild";
 import ChangePassword from "./pages/ChangePassword";
+import StoreListPage from './pages/StoreListPage';
 
 // Component bảo vệ route dựa trên role
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -52,19 +53,19 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   // Chuyển đổi role string thành roleId tương ứng
   let roleId;
   switch(role) {
-    case "admin":
+    case "Admin":
       roleId = "ROLE_ADMIN";
       break;
-    case "manager":
+    case "Manager":
       roleId = "ROLE_MANAGER";
       break;
-    case "designer":
+    case "Designer":
       roleId = "ROLE_DESIGNER";
       break;
-    case "sales":
+    case "Sales":
       roleId = "ROLE_SALES";
       break;
-    case "technician":
+    case "Technician":
       roleId = "ROLE_TECHNICIAN";
       break;
     default:
@@ -103,20 +104,21 @@ const AppContent = () => {
           <Route path="/design/bang-gia-ao-lop" element={<PricingClass />} />
           {/* <Route path="/design/bang-gia-phu-kien" element={<PricingAccessory />} /> */}
           <Route path="/design/bang-gia-dich-vu" element={<PricingService />} />
-          <Route path="/blog" element={<InfoPage />} />
+          {/* <Route path="/blog" element={<InfoPage />} />
           <Route path="/blog/:id" element={<ArticleDetail />} />
           <Route path="/blog/class" element={<NewsPage />} />
           <Route path="/blog/class/:id" element={<NewsDetail />} />
           <Route path="/blog/b" element={<HandPage />} />
           <Route path="/blog/b/:id" element={<HandDetail />} />
-          <Route path="/blog/b/:id" element={<HandDetail />} />
+          <Route path="/blog/b/:id" element={<HandDetail />} /> */}
           <Route path="/change-password" element={<ChangePassword />} />
           {/* <Route path="/order-detail" element={<OrderDetail />} /> */}
 
           {/* Protected routes for Admin (roleId = "ROLE_ADMIN") */}
-          <Route path="/admin" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AdminPage /></ProtectedRoute>} />
+          <Route path="/Admin" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AdminPage /></ProtectedRoute>} />
           <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderTracking /></ProtectedRoute>} />
           <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderDetail /></ProtectedRoute>} />
+          <Route path="/store/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><StoreListPage /></ProtectedRoute>} />
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[2]}><MemberPage /></ProtectedRoute>} /> */}
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
 
