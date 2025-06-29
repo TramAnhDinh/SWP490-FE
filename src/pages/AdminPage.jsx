@@ -492,7 +492,9 @@ const AdminPage = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{account.username}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{account.roleName}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {account.isActive ? "Hoạt động" : "Không hoạt động"}
+                                                    <span className={account.isActive ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                                                        {account.isActive ? "Hoạt động" : "Không hoạt động"}
+                                                    </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     <button onClick={() => handleDelete(account.accountID)} className="text-red-600 hover:text-red-900">
