@@ -57,7 +57,9 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  token: null,
   user: null, // Lưu thông tin user
+  role: null,
 };
 
 const authSlice = createSlice({

@@ -17,7 +17,7 @@ const Footer = () => {
           <div className="w-80 ml-20">
             <h3 className="font-bold text-lg">CÔNG TY TNHH DECAL POTATO</h3>
             <p>MST: 0215721565</p>
-            <p>📍 32 Bà Huyện Thanh Quan, P. Võ Thị Sáu, Quận 3, TP.HCM</p>
+            <p>📍 88/32 Bà Huyện Thanh Quan, P. Võ Thị Sáu, Quận 3, TP.HCM</p>
             <p>📞 098 608 6487</p>
             <p>✉ info@potato.decal</p>
             <div className="mt-3 text-sm">
@@ -33,7 +33,7 @@ const Footer = () => {
           <h3 className="font-bold text-lg mb-2">BẢN ĐỒ</h3>
           <iframe
             className="w-full h-40 rounded-lg"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.459351589249!2d106.68446373400755!3d10.776080926977688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3b204f0e0b%3A0x45a1a4fc8d094d7b!2zMTIgQsOgIEh1eeG7h24gVGhhbmggUXVhbiwgUGjGsOG7nW5nIDYsIFF14bqtbiAzLCBI4buTIENow60gTWluaCwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1741278057658!5m2!1sen!2s"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4611603998987!2d106.6845102287784!3d10.775936439594317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3b1ebfe1a5%3A0xcac24288e9601e3d!2zODgvMzIgQsOgIEh1eeG7h24gVGhhbmggUXVhbiwgUGjGsOG7nW5nIDksIFF14bqtbiAzLCBI4buTIENow60gTWluaCwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1719738262891!5m2!1sen!2s"
             allowFullScreen=""
             loading="lazy">
           </iframe>

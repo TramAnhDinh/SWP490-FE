@@ -35,18 +35,18 @@ const ContactPage = () => {
         
         {/* Thông tin liên hệ */}
         <div className="space-y-4">
-          <h3 className="text-2xl font-semibold mb-4">CÔNG TY TNHH ĐỒNG PHỤC CLOTHING</h3>
+          <h3 className="text-2xl font-semibold mb-4">CÔNG TY TNHH DECAL POTATO</h3>
           <p className="flex items-center">
-            <MapPin className="mr-2" /> Địa chỉ: 12 Bà Huyện Thanh Quan, Phường Võ Thị Sáu, Quận 3, TP.HCM
+            <MapPin className="mr-2" /> Địa chỉ: 88/32 Bà Huyện Thanh Quan, Phường Võ Thị Sáu, Quận 3, TP.HCM
           </p>
           <p className="flex items-center">
-            <Mail className="mr-2" /> Email: info@potato.clothing
+            <Mail className="mr-2" /> Email: info@potato.decal
           </p>
           <p className="flex items-center">
-            <Phone className="mr-2" /> Hotline: 078 608 6494
+            <Phone className="mr-2" /> Hotline: 098 608 6487
           </p>
           <p className="flex items-center">
-            <CreditCard className="mr-2" /> MST: 0314721531
+            <CreditCard className="mr-2" /> MST: 0215721565
           </p>
 
           {/* Google Map trực tiếp bằng iframe */}
@@ -54,12 +54,12 @@ const ContactPage = () => {
             <h3 className="text-2xl font-semibold mb-4">Bản đồ</h3>
             {/* Dòng này là dấu chỉ địa điểm */}
             <p className="flex items-center text-gray-700 mb-2">
-              <MapPin className="mr-2 text-red-500" /> 12 Bà Huyện Thanh Quan, Quận 3, TP.HCM
+              <MapPin className="mr-2 text-red-500" />88/32 Bà Huyện Thanh Quan, Quận 3, TP.HCM
             </p>
             <div className="w-full h-64 rounded-md overflow-hidden shadow-md">
               <iframe
                 title="Google Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.459351589249!2d106.68446373400755!3d10.776080926977688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3b204f0e0b%3A0x45a1a4fc8d094d7b!2zMTIgQsOgIEh1eeG7h24gVGhhbmggUXVhbiwgUGjGsOG7nW5nIDYsIFF14bqtbiAzLCBI4buTIENow60gTWluaCwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1741278057658!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4611603998987!2d106.6845102287784!3d10.775936439594317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3b1ebfe1a5%3A0xcac24288e9601e3d!2zODgvMzIgQsOgIEh1eeG7h24gVGhhbmggUXVhbiwgUGjGsOG7nW5nIDksIFF14bqtbiAzLCBI4buTIENow60gTWluaCwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1719738262891!5m2!1sen!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

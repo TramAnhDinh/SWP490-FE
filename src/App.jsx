@@ -116,8 +116,8 @@ const AppContent = () => {
 
           {/* Protected routes for Admin (roleId = "ROLE_ADMIN") */}
           <Route path="/Admin" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AdminPage /></ProtectedRoute>} />
-          <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderTracking /></ProtectedRoute>} />
-          <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderDetail /></ProtectedRoute>} />
+          {/* <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderTracking /></ProtectedRoute>} />
+          <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderDetail /></ProtectedRoute>} /> */}
           <Route path="/store/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><StoreListPage /></ProtectedRoute>} />
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[2]}><MemberPage /></ProtectedRoute>} /> */}
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
