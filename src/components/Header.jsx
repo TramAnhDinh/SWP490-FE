@@ -301,7 +301,7 @@ const Header = () => {
         {role === "Admin" ? (
           <>
             <Link to="/Admin" className="hover:text-orange-400 text-xl">TÀI KHOẢN NHÂN VIÊN</Link>
-            <Link to="/store" className="hover:text-orange-400 text-xl">THEO DÕI CÁC CỬA HÀNG</Link>
+            <Link to="/store" className="hover:text-orange-400 text-xl">CÁC CỬA HÀNG</Link>
             {/* <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link> */}
           </>
         ) : (

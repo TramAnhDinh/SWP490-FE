@@ -10,6 +10,9 @@ const StoreDetailPage = () => {
     const navigate = useNavigate();
 
     const [store, setStore] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedStoreName, setEditedStoreName] = useState("");
+    const [editedAddress, setEditedAddress] = useState("");
 
     const fetchStoreDetail = async () => {
         try {
@@ -27,6 +30,8 @@ const StoreDetailPage = () => {
             const data = await response.json();
             console.log('Fetched store:', data);
             setStore(data);
+            setEditedStoreName(data.storeName);
+            setEditedAddress(data.address || "");
         } catch (error) {
             console.error('Error fetching store detail:', error);
             toast.error('Lỗi khi tải chi tiết cửa hàng!');
@@ -39,6 +44,47 @@ const StoreDetailPage = () => {
         }
     }, [token, id]);
 
+    const handleSave = async () => {
+        if (!editedStoreName) {
+            toast.error('Vui lòng nhập tên cửa hàng!');
+            return;
+        }
+
+        const payload = {
+            storeID: store.storeID,
+            storeName: editedStoreName,
+            address: editedAddress
+        };
+
+        console.log('Sending payload:', payload);
+
+        try {
+            const response = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Stores/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Cập nhật thất bại!');
+            }
+
+            toast.success('Cập nhật cửa hàng thành công!');
+
+            // Quay lại danh sách store
+            setTimeout(() => {
+                navigate('/store');
+            }, 1000);
+
+        } catch (error) {
+            console.error('Error updating store:', error);
+            toast.error('Lỗi khi cập nhật cửa hàng!');
+        }
+    };
+
     if (!store) return <div className="text-center mt-10 text-lg">Đang tải chi tiết cửa hàng...</div>;
 
     return (
@@ -48,12 +94,45 @@ const StoreDetailPage = () => {
                 <h1 className="text-2xl font-bold mb-4">Chi tiết cửa hàng</h1>
 
                 <p><strong>Mã cửa hàng:</strong> {store.storeID}</p>
-                <p><strong>Tên cửa hàng:</strong> {store.storeName}</p>
-                <p><strong>Địa chỉ:</strong> {store.address || "Chưa cập nhật địa chỉ"}</p>
 
-                <div className="flex gap-4 mt-6">
-                    <button onClick={() => navigate(-1)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Quay lại</button>
-                </div>
+                {isEditing ? (
+                    <>
+                        <div className="mt-4">
+                            <label className="block mb-2">Tên cửa hàng:</label>
+                            <input
+                                type="text"
+                                value={editedStoreName}
+                                onChange={(e) => setEditedStoreName(e.target.value)}
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+
+                        <div className="mt-4">
+                            <label className="block mb-2">Địa chỉ:</label>
+                            <input
+                                type="text"
+                                value={editedAddress}
+                                onChange={(e) => setEditedAddress(e.target.value)}
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+
+                        <div className="flex gap-4 mt-6">
+                            <button onClick={handleSave} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Lưu</button>
+                            <button onClick={() => setIsEditing(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Hủy</button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <p><strong>Tên cửa hàng:</strong> {store.storeName}</p>
+                        <p><strong>Địa chỉ:</strong> {store.address || "Chưa cập nhật địa chỉ"}</p>
+
+                        <div className="flex gap-4 mt-6">
+                            <button onClick={() => setIsEditing(true)} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sửa</button>
+                            <button onClick={() => navigate(-1)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Quay lại</button>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
