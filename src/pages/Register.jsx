@@ -110,7 +110,7 @@ const Register = () => {
         <div className="w-full md:w-1/2 px-4 md:px-12">
           <h2 className="font-bold text-4xl text-[#915621]">Đăng ký</h2>
           <p className="text-lg mt-4 text-[#915621]">
-            Tạo tài khoản theo phân quyền admin
+            Chỉ admin mới được tạo tài khoản
           </p>
 
           {availableRoles.length === 0 ? (
