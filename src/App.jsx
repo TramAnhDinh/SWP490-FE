@@ -16,7 +16,7 @@ import Checkout from './pages/Checkout';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import AdminPage from "./pages/AdminPage";
-import MemberPage from './pages/MemberPage';
+import ManagerPage from './pages/ManagerPage';
 import OrderDetail from './pages/OrderDetail';
 
 import NewProductCarousel from './components/NewProductCarousel';
@@ -43,6 +43,9 @@ import ChangePassword from "./pages/ChangePassword";
 import StoreListPage from './pages/StoreListPage';
 import AccountDetail from './pages/AccountDetail';
 import StoreDetailPage from './pages/StoreDetailPage';
+import GuestServiceListPage from './pages/GuestServiceListPage';
+import DecalCreateForm from './pages/DecalCreateForm';
+
 
 // Component bảo vệ route dựa trên role
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -106,6 +109,7 @@ const AppContent = () => {
           <Route path="/design/bang-gia-ao-lop" element={<PricingClass />} />
           {/* <Route path="/design/bang-gia-phu-kien" element={<PricingAccessory />} /> */}
           <Route path="/design/bang-gia-dich-vu" element={<PricingService />} />
+          <Route path="/decal-service" element={<GuestServiceListPage />} />
           {/* <Route path="/blog" element={<InfoPage />} />
           <Route path="/blog/:id" element={<ArticleDetail />} />
           <Route path="/blog/class" element={<NewsPage />} />
@@ -126,8 +130,8 @@ const AppContent = () => {
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[2]}><MemberPage /></ProtectedRoute>} /> */}
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
 
-           <Route path="/member" element={<ProtectedRoute allowedRoles={[2, 3]}><MemberPage /></ProtectedRoute>} />
-
+           <Route path="/Manager" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><ManagerPage /></ProtectedRoute>} />
+             <Route path="/Decal-form" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalCreateForm /></ProtectedRoute>} />
           {/* Protected routes for Member (roleId = 3) */}
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[3]}><MemberPage /></ProtectedRoute>} /> */}
           <Route path="/cart" element={<ProtectedRoute allowedRoles={[3]}><Cart /></ProtectedRoute>} />
@@ -137,10 +141,10 @@ const AppContent = () => {
           <Route path="/checkout" element={<ProtectedRoute allowedRoles={[3]}><Checkout /></ProtectedRoute>} />
           <Route path="/checkout-confirmation" element={<ProtectedRoute allowedRoles={[3]}><CheckoutConfirmation /></ProtectedRoute>} />
           <Route path="/order-status" element={<ProtectedRoute allowedRoles={[3]}><OrderStatus /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute allowedRoles={[3]}><ProfilePage /></ProtectedRoute>} />
-          <Route path="/payment-callback" element={<PaymentCallback />} />
+          {/* <Route path="/profile" element={<ProtectedRoute allowedRoles={[3]}><ProfilePage /></ProtectedRoute>} /> */}
+          {/* <Route path="/payment-callback" element={<PaymentCallback />} />
           <Route path="/payment-success" element={<CheckPaymentSuccess />} />
-          <Route path="/payment-failed" element={<CheckPaymentFailed />} />
+          <Route path="/payment-failed" element={<CheckPaymentFailed />} /> */}
 
           {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" />} />

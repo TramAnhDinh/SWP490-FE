@@ -304,6 +304,10 @@ const Header = () => {
             <Link to="/store" className="hover:text-orange-400 text-xl">CÁC CỬA HÀNG</Link>
             {/* <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link> */}
           </>
+        ) : role === "Manager" ? (
+          <>
+            <Link to="/Manager" className="hover:text-orange-400 text-xl">QUẢN LÝ DECAL</Link>
+          </>
         ) : (
           <>
             <Link to="/" className="hover:text-orange-400 text-xl">TRANG CHỦ</Link>
@@ -315,7 +319,7 @@ const Header = () => {
               </button>
               <div className="absolute left-0 top-full w-48 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
                 {/* <Link to="/design/custom" className="block px-4 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link> */}
-                <Link to="/design/mau-co-san" className="block px-4 py-2 hover:bg-gray-800">SẢN PHẨM</Link>
+                <Link to="/decal-service" className="block px-4 py-2 hover:bg-gray-800">DỊCH VỤ</Link>
               </div>
             </div>
 

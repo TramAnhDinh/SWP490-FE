@@ -14,6 +14,7 @@ const AccountDetail = () => {
     const [editedUsername, setEditedUsername] = useState("");
     const [editedStatus, setEditedStatus] = useState(true);
     const [editedPassword, setEditedPassword] = useState("");
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const fetchAccountDetail = async () => {
         try {
@@ -83,12 +84,33 @@ const AccountDetail = () => {
                 return;
             }
 
-            toast.success('Cập nhật tài khoản thành công!');
-            navigate('/Admin');
+            // Hiện popup thành công
+            setShowSuccessPopup(true);
         } catch (error) {
             console.error('Error updating account:', error);
             toast.error('Lỗi khi cập nhật tài khoản!');
         }
+    };
+
+    const SuccessPopup = () => {
+        if (!showSuccessPopup) return null;
+
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
+                    <h3 className="text-xl font-bold mb-4 text-green-600">Cập nhật thành công!</h3>
+                    <p className="text-gray-600 mb-6">Tài khoản đã được cập nhật.</p>
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => navigate('/Admin')}
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     if (!account) return <div className="text-center mt-10 text-lg">Đang tải...</div>;
@@ -96,6 +118,7 @@ const AccountDetail = () => {
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
             <ToastContainer position="top-right" autoClose={3000} />
+            <SuccessPopup />
             <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
                 <h1 className="text-2xl font-bold mb-4">Chi tiết tài khoản</h1>
 
