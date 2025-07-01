@@ -306,7 +306,18 @@ const Header = () => {
           </>
         ) : role === "Manager" ? (
           <>
-            <Link to="/Manager" className="hover:text-orange-400 text-xl">QUẢN LÝ DECAL</Link>
+            <div>
+                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-800 flex items-center justify-between"
+                    onClick={() => setDesignDropdownOpen(!designDropdownOpen)}>
+                    THIẾT KẾ DECAL <ChevronDown />
+                  </button>
+                  {designDropdownOpen && (
+                    <div className="bg-gray-900">
+                      <Link to="/Manager" className="hover:text-orange-400 text-sm">QUẢN LÝ MẪU DECAL</Link><br/>
+                      <Link to="/Manager-loai-decal" className="hover:text-orange-400 text-sm">QUẢN LÝ LOẠI DECAL</Link>
+                    </div>
+                  )}
+                </div>
           </>
         ) : (
           <>
