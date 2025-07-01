@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AccountDetailPage = () => {
+const AccountDetail = () => {
     const { id } = useParams();
     const token = useSelector((state) => state.user?.token);
     const navigate = useNavigate();
@@ -169,4 +169,4 @@ const AccountDetailPage = () => {
     );
 };
 
-export default AccountDetailPage;
+export default AccountDetail;

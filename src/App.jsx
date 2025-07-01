@@ -42,6 +42,7 @@ import CheckPaymentFailed from "./pages/CheckPaymentFaild";
 import ChangePassword from "./pages/ChangePassword";
 import StoreListPage from './pages/StoreListPage';
 import AccountDetail from './pages/AccountDetail';
+import StoreDetailPage from './pages/StoreDetailPage';
 
 // Component bảo vệ route dựa trên role
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -121,6 +122,7 @@ const AppContent = () => {
           {/* <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderTracking /></ProtectedRoute>} />
           <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderDetail /></ProtectedRoute>} /> */}
           <Route path="/store/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><StoreListPage /></ProtectedRoute>} />
+          <Route path="/Stores/:id" element={<StoreDetailPage />} />
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[2]}><MemberPage /></ProtectedRoute>} /> */}
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
 

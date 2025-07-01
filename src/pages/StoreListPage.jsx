@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getStores } from "../redux/slices/storeService";
 import { MapPin } from "lucide-react";
 
 const StoreListPage = () => {
     const [stores, setStores] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchStores = async () => {
@@ -30,13 +32,14 @@ const StoreListPage = () => {
                 {stores.map((store) => (
                     <div
                         key={store.storeID}
-                        className="border border-gray-200 p-6 rounded-2xl shadow-md bg-white flex flex-col justify-center items-center aspect-square hover:shadow-xl hover:scale-105 transition-transform duration-300"
+                        onClick={() => navigate(`/Stores/${store.storeID}`)}
+                        className="cursor-pointer border border-gray-200 p-6 rounded-2xl shadow-md bg-white flex flex-col justify-center items-center aspect-square hover:shadow-xl hover:scale-105 transition-transform duration-300"
                     >
                         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 mb-4">
                             <MapPin className="text-yellow-500 w-8 h-8" />
                         </div>
                         <h2 className="text-xl font-bold text-gray-800 text-center mb-2">{store.storeName}</h2>
-                        <p className="text-gray-600 text-center">{store.address}</p>
+                        <p className="text-gray-600 text-center">{store.address || "Chưa cập nhật địa chỉ"}</p>
                     </div>
                 ))}
             </div>
