@@ -1,8 +1,95 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
-import { FaTrash, FaPlus } from 'react-icons/fa';
+import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
+
+const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
+    const [formData, setFormData] = useState(initialData);
+
+    useEffect(() => {
+        setFormData(initialData);
+    }, [initialData]);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit(formData);
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
+                <h2 className="text-xl font-bold mb-4">{title}</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block mb-1 font-medium">Mã Decal</label>
+                        <input
+                            type="text"
+                            name="templateID"
+                            value={formData.templateID}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            disabled={isEdit}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-medium">Tên Decal</label>
+                        <input
+                            type="text"
+                            name="templateName"
+                            value={formData.templateName}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-medium">Link Hình Ảnh</label>
+                        <input
+                            type="text"
+                            name="imageURL"
+                            value={formData.imageURL}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-medium">Mã Loại Decal</label>
+                        <input
+                            type="text"
+                            name="decalTypeID"
+                            value={formData.decalTypeID}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-medium">Tên Loại Decal</label>
+                        <input
+                            type="text"
+                            name="decalTypeName"
+                            value={formData.decalTypeName}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            required
+                        />
+                    </div>
+                    <div className="flex justify-end gap-4">
+                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Đóng</button>
+                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
 
 const ManagerPage = () => {
     const token = useSelector((state) => state.user?.token);
@@ -11,21 +98,13 @@ const ManagerPage = () => {
     const [selectedDecalId, setSelectedDecalId] = useState(null);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [showCreateForm, setShowCreateForm] = useState(false);
-
-    // Form states
-    const [templateID, setTemplateID] = useState('');
-    const [templateName, setTemplateName] = useState('');
-    const [imageURL, setImageURL] = useState('');
-    const [decalTypeID, setDecalTypeID] = useState('');
-    const [decalTypeName, setDecalTypeName] = useState('');
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [currentEditData, setCurrentEditData] = useState(null);
 
     const fetchDecals = async () => {
         try {
             const response = await fetch('https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json'
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
             setDecals(data);
@@ -48,10 +127,7 @@ const ManagerPage = () => {
         try {
             await fetch(`https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates/${selectedDecalId}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json'
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             toast.success('Xóa decal thành công!');
             fetchDecals();
@@ -63,22 +139,7 @@ const ManagerPage = () => {
         }
     };
 
-    const handleCreateDecal = async (e) => {
-        e.preventDefault();
-
-        if (!templateID || !templateName || !imageURL || !decalTypeID || !decalTypeName) {
-            toast.error('Vui lòng điền đầy đủ thông tin!');
-            return;
-        }
-
-        const decalData = {
-            templateID,
-            templateName,
-            imageURL,
-            decalTypeID,
-            decalTypeName
-        };
-
+    const handleCreateDecal = async (data) => {
         try {
             const response = await fetch('https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates', {
                 method: 'POST',
@@ -86,19 +147,15 @@ const ManagerPage = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify(decalData),
+                body: JSON.stringify(data),
             });
-
             if (response.ok) {
                 toast.success('Tạo decal thành công!');
                 fetchDecals();
                 setShowCreateForm(false);
-                resetForm();
             } else {
                 const errorText = await response.text();
-                console.error('Lỗi tạo decal:', errorText);
                 toast.error(`Tạo decal thất bại: ${errorText}`);
-
             }
         } catch (error) {
             console.error('Error creating decal:', error);
@@ -106,12 +163,33 @@ const ManagerPage = () => {
         }
     };
 
-    const resetForm = () => {
-        setTemplateID('');
-        setTemplateName('');
-        setImageURL('');
-        setDecalTypeID('');
-        setDecalTypeName('');
+    const handleEdit = (decal) => {
+        setCurrentEditData(decal);
+        setShowEditForm(true);
+    };
+
+    const handleUpdateDecal = async (data) => {
+        try {
+            const response = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates/${data.templateID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(data),
+            });
+            if (response.ok) {
+                toast.success('Cập nhật decal thành công!');
+                fetchDecals();
+                setShowEditForm(false);
+            } else {
+                const errorText = await response.text();
+                toast.error(`Cập nhật decal thất bại: ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Error updating decal:', error);
+            toast.error('Lỗi khi cập nhật decal!');
+        }
     };
 
     const filteredDecals = decals.filter(decal =>
@@ -120,19 +198,14 @@ const ManagerPage = () => {
 
     const DeleteConfirmDialog = () => {
         if (!showConfirmDialog) return null;
-
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
                     <h3 className="text-xl font-bold mb-4">Xác nhận xóa</h3>
                     <p className="text-gray-600 mb-6">Bạn có chắc chắn muốn xóa decal này?</p>
                     <div className="flex justify-end gap-4">
-                        <button onClick={() => setShowConfirmDialog(false)} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-                            Hủy
-                        </button>
-                        <button onClick={handleConfirmDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                            Xóa
-                        </button>
+                        <button onClick={() => setShowConfirmDialog(false)} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Hủy</button>
+                        <button onClick={handleConfirmDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Xóa</button>
                     </div>
                 </div>
             </div>
@@ -144,36 +217,30 @@ const ManagerPage = () => {
             <ToastContainer position="top-right" autoClose={3000} />
             <DeleteConfirmDialog />
 
-            {/* Popup Form Thêm Decal */}
             {showCreateForm && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
-                        <h2 className="text-xl font-bold mb-4">➕ Thêm Decal Mới</h2>
-                        <form onSubmit={handleCreateDecal} className="space-y-4">
-                            {[
-                                { label: "Mã Decal", value: templateID, setter: setTemplateID },
-                                { label: "Tên Decal", value: templateName, setter: setTemplateName },
-                                { label: "Link Hình Ảnh", value: imageURL, setter: setImageURL },
-                                { label: "Mã Loại Decal", value: decalTypeID, setter: setDecalTypeID },
-                                { label: "Tên Loại Decal", value: decalTypeName, setter: setDecalTypeName },
-                            ].map((field, index) => (
-                                <div key={index}>
-                                    <label className="block mb-1 font-medium">{field.label}</label>
-                                    <input type="text" value={field.value} onChange={(e) => field.setter(e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2" required />
-                                </div>
-                            ))}
+                <FormPopup
+                    title="➕ Thêm Decal Mới"
+                    initialData={{
+                        templateID: '',
+                        templateName: '',
+                        imageURL: '',
+                        decalTypeID: '',
+                        decalTypeName: ''
+                    }}
+                    onSubmit={handleCreateDecal}
+                    onClose={() => setShowCreateForm(false)}
+                    isEdit={false}
+                />
+            )}
 
-                            <div className="flex justify-end gap-4">
-                                <button type="button" onClick={() => { setShowCreateForm(false); resetForm(); }} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-                                    Đóng
-                                </button>
-                                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                    Tạo Decal
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            {showEditForm && (
+                <FormPopup
+                    title="✏️ Chỉnh Sửa Decal"
+                    initialData={currentEditData}
+                    onSubmit={handleUpdateDecal}
+                    onClose={() => setShowEditForm(false)}
+                    isEdit={true}
+                />
             )}
 
             <div className="max-w-7xl mx-auto">
@@ -186,7 +253,7 @@ const ManagerPage = () => {
                     </div>
 
                     <div className="p-6">
-
+                        <input type="text" placeholder="Tìm kiếm decal..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg" />
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
@@ -209,9 +276,8 @@ const ManagerPage = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{decal.templateName}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{decal.decalTypeName}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-4">
-                                                    <button onClick={() => handleDelete(decal.templateID)} className="text-red-600 hover:text-red-900">
-                                                        <FaTrash className="w-5 h-5" />
-                                                    </button>
+                                                    <button onClick={() => handleEdit(decal)} className="text-blue-600 hover:text-blue-900"><FaEdit className="w-5 h-5" /></button>
+                                                    <button onClick={() => handleDelete(decal.templateID)} className="text-red-600 hover:text-red-900"><FaTrash className="w-5 h-5" /></button>
                                                 </td>
                                             </tr>
                                         ))
