@@ -11,7 +11,7 @@ const AccountDetailPage = () => {
 
     const [account, setAccount] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editedRoleName, setEditedRoleName] = useState("");
+    const [editedUsername, setEditedUsername] = useState("");
     const [editedStatus, setEditedStatus] = useState(true);
     const [editedPassword, setEditedPassword] = useState("");
 
@@ -26,7 +26,7 @@ const AccountDetailPage = () => {
             const data = await response.json();
             console.log('Fetched account:', data);
             setAccount(data);
-            setEditedRoleName(data.role?.roleName || "");
+            setEditedUsername(data.username);
             setEditedStatus(data.isActive);
         } catch (error) {
             console.error('Error fetching account detail:', error);
@@ -41,21 +41,21 @@ const AccountDetailPage = () => {
     }, [token, id]);
 
     const handleSave = async () => {
-        if (!editedRoleName || editedPassword === "") {
+        if (editedPassword === "" || editedUsername.trim() === "") {
             toast.error('Vui lòng nhập đầy đủ thông tin!');
             return;
         }
 
         const payload = {
             accountID: account.accountID,
-            username: account.username,
+            username: editedUsername,
             email: account.email,
             passwordHash: editedPassword,
             isActive: editedStatus,
-            roleID: account.role?.roleID || "ROLE_MANAGER", // fallback nếu thiếu
+            roleID: account.roleID,
             role: {
-                roleID: account.role?.roleID || "ROLE_MANAGER",
-                roleName: editedRoleName
+                roleID: account.roleID,
+                roleName: account.roleName
             }
         };
 
@@ -85,8 +85,6 @@ const AccountDetailPage = () => {
 
             toast.success('Cập nhật tài khoản thành công!');
             navigate('/Admin');
-            setIsEditing(false);
-            fetchAccountDetail();
         } catch (error) {
             console.error('Error updating account:', error);
             toast.error('Lỗi khi cập nhật tài khoản!');
@@ -102,19 +100,27 @@ const AccountDetailPage = () => {
                 <h1 className="text-2xl font-bold mb-4">Chi tiết tài khoản</h1>
 
                 <p><strong>Mã tài khoản:</strong> {account.accountID}</p>
-                <p><strong>Username:</strong> {account.username}</p>
-                <p><strong>Email:</strong> {account.email}</p>
 
                 {isEditing ? (
                     <>
                         <div className="mt-4">
-                            <label className="block mb-2">Vai trò:</label>
+                            <label className="block mb-2">Username:</label>
                             <input
                                 type="text"
-                                value={editedRoleName}
-                                onChange={(e) => setEditedRoleName(e.target.value)}
+                                value={editedUsername}
+                                onChange={(e) => setEditedUsername(e.target.value)}
                                 className="w-full p-2 border rounded"
                             />
+                        </div>
+
+                        <div className="mt-4">
+                            <label className="block mb-2">Email:</label>
+                            <p className="p-2 border rounded bg-gray-100">{account.email}</p>
+                        </div>
+
+                        <div className="mt-4">
+                            <label className="block mb-2">Vai trò:</label>
+                            <p className="p-2 border rounded bg-gray-100">{account.roleName}</p>
                         </div>
 
                         <div className="mt-4">
@@ -147,7 +153,9 @@ const AccountDetailPage = () => {
                     </>
                 ) : (
                     <>
-                        <p><strong>Vai trò:</strong> {account.role?.roleName}</p>
+                        <p><strong>Username:</strong> {account.username}</p>
+                        <p><strong>Email:</strong> {account.email}</p>
+                        <p><strong>Vai trò:</strong> {account.roleName}</p>
                         <p><strong>Trạng thái:</strong> {account.isActive ? "Hoạt động" : "Không hoạt động"}</p>
 
                         <div className="flex gap-4 mt-6">
