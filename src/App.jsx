@@ -45,7 +45,8 @@ import AccountDetail from './pages/AccountDetail';
 import StoreDetailPage from './pages/StoreDetailPage';
 import GuestServiceListPage from './pages/GuestServiceListPage';
 import DecalCreateForm from './pages/DecalCreateForm';
-
+import DecalTypePage from './pages/DecalTypePage';
+import DecalTypeDetailPage from './pages/DecalTypeDetailPage';
 
 // Component bảo vệ route dựa trên role
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -131,7 +132,8 @@ const AppContent = () => {
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
 
            <Route path="/Manager" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><ManagerPage /></ProtectedRoute>} />
-             <Route path="/Decal-form" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalCreateForm /></ProtectedRoute>} />
+           <Route path="/Decal-type" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalTypePage /></ProtectedRoute>} />
+           <Route path="/Decal-type/:id" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalTypeDetailPage /></ProtectedRoute>} />
           {/* Protected routes for Member (roleId = 3) */}
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[3]}><MemberPage /></ProtectedRoute>} /> */}
           <Route path="/cart" element={<ProtectedRoute allowedRoles={[3]}><Cart /></ProtectedRoute>} />

@@ -313,8 +313,8 @@ const Header = () => {
                   </button>
                   {designDropdownOpen && (
                     <div className="bg-gray-900">
-                      <Link to="/Manager" className="hover:text-orange-400 text-sm">QUẢN LÝ MẪU DECAL</Link><br/>
-                      <Link to="/Manager-loai-decal" className="hover:text-orange-400 text-sm">QUẢN LÝ LOẠI DECAL</Link>
+                      <Link to="/Manager" className="hover:text-orange-400 text-base">QUẢN LÝ MẪU DECAL</Link><br/>
+                      <Link to="/Decal-type" className="hover:text-orange-400 text-base">QUẢN LÝ LOẠI DECAL</Link>  
                     </div>
                   )}
                 </div>
