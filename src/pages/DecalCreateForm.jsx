@@ -10,6 +10,7 @@ const DecalCreateForm = ({ onDecalCreated }) => {
     const [imageURL, setImageURL] = useState('');
     const [decalTypeID, setDecalTypeID] = useState('');
     const [decalTypeName, setDecalTypeName] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,6 +20,7 @@ const DecalCreateForm = ({ onDecalCreated }) => {
             return;
         }
 
+        setLoading(true);
         try {
             const response = await fetch('https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates', {
                 method: 'POST',
@@ -37,7 +39,7 @@ const DecalCreateForm = ({ onDecalCreated }) => {
 
             if (response.ok) {
                 toast.success('Tạo decal thành công!');
-                onDecalCreated(); // gọi reload data
+                onDecalCreated(); // Reload list
                 setTemplateID('');
                 setTemplateName('');
                 setImageURL('');
@@ -49,6 +51,8 @@ const DecalCreateForm = ({ onDecalCreated }) => {
         } catch (error) {
             console.error('Error creating decal:', error);
             toast.error('Lỗi khi tạo decal!');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -81,7 +85,7 @@ const DecalCreateForm = ({ onDecalCreated }) => {
             <div>
                 <label className="block mb-1 font-medium">Link Hình Ảnh</label>
                 <input
-                    type="text"
+                    type="url"
                     value={imageURL}
                     onChange={(e) => setImageURL(e.target.value)}
                     className="w-full border border-gray-300 rounded px-3 py-2"
@@ -113,9 +117,10 @@ const DecalCreateForm = ({ onDecalCreated }) => {
 
             <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                disabled={loading}
+                className={`px-4 py-2 rounded text-white ${loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
             >
-                Tạo Decal
+                {loading ? 'Đang tạo...' : 'Tạo Decal'}
             </button>
         </form>
     );
