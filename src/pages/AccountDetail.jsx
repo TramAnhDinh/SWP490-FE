@@ -50,7 +50,7 @@ const AccountDetail = () => {
         const payload = {
             accountID: account.accountID,
             username: editedUsername,
-            email: account.email,
+            // email: account.email,
             passwordHash: editedPassword,
             isActive: editedStatus,
             roleID: account.roleID,
@@ -102,7 +102,7 @@ const AccountDetail = () => {
                     <p className="text-gray-600 mb-6">Tài khoản đã được cập nhật.</p>
                     <div className="flex justify-end">
                         <button
-                            onClick={() => navigate('/Admin')}
+                            onClick={() => navigate('/Account')}
                             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         >
                             OK
@@ -136,10 +136,10 @@ const AccountDetail = () => {
                             />
                         </div>
 
-                        <div className="mt-4">
+                        {/* <div className="mt-4">
                             <label className="block mb-2">Email:</label>
                             <p className="p-2 border rounded bg-gray-100">{account.email}</p>
-                        </div>
+                        </div> */}
 
                         <div className="mt-4">
                             <label className="block mb-2">Vai trò:</label>
@@ -177,7 +177,7 @@ const AccountDetail = () => {
                 ) : (
                     <>
                         <p><strong>Username:</strong> {account.username}</p>
-                        <p><strong>Email:</strong> {account.email}</p>
+                        {/* <p><strong>Email:</strong> {account.email}</p> */}
                         <p><strong>Vai trò:</strong> {account.roleName}</p>
                         <p><strong>Trạng thái:</strong> {account.isActive ? "Hoạt động" : "Không hoạt động"}</p>
 

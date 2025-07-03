@@ -15,8 +15,8 @@ import DesignerPage from './pages/DesignerPage';
 import Checkout from './pages/Checkout';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import AdminPage from "./pages/AdminPage";
-import ManagerPage from './pages/ManagerPage';
+import AccountPage from "./pages/AccountPage";
+import DecalTemplatePage from './pages/DecalTemplatePage';
 import OrderDetail from './pages/OrderDetail';
 
 import NewProductCarousel from './components/NewProductCarousel';
@@ -122,8 +122,8 @@ const AppContent = () => {
           {/* <Route path="/order-detail" element={<OrderDetail />} /> */}
 
           {/* Protected routes for Admin (roleId = "ROLE_ADMIN") */}
-          <Route path="/Admin" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AdminPage /></ProtectedRoute>} />
-          <Route path="/Admin/Detail/:id" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AccountDetail/></ProtectedRoute>} />
+          <Route path="/Account" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AccountPage /></ProtectedRoute>} />
+          <Route path="/Account/:id" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><AccountDetail/></ProtectedRoute>} />
           {/* <Route path="/order-tracking/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderTracking /></ProtectedRoute>} />
           <Route path="/order-detail/:orderId" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><OrderDetail /></ProtectedRoute>} /> */}
           <Route path="/store/" element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]}><StoreListPage /></ProtectedRoute>} />
@@ -131,7 +131,7 @@ const AppContent = () => {
           {/* <Route path="/member" element={<ProtectedRoute allowedRoles={[2]}><MemberPage /></ProtectedRoute>} /> */}
            {/* <Route path="/order-tracking/:orderId" element={<ProtectedRoute allowedRoles={[2]}><OrderTracking /></ProtectedRoute>} /> */}
 
-           <Route path="/Manager" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><ManagerPage /></ProtectedRoute>} />
+           <Route path="/Decal-template" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalTemplatePage /></ProtectedRoute>} />
            <Route path="/Decal-type" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalTypePage /></ProtectedRoute>} />
            <Route path="/Decal-type/:id" element={<ProtectedRoute allowedRoles={["ROLE_MANAGER"]}><DecalTypeDetailPage /></ProtectedRoute>} />
           {/* Protected routes for Member (roleId = 3) */}

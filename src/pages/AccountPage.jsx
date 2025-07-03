@@ -155,7 +155,7 @@ const AdminPage = () => {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-4">
-                                                    <button onClick={() => navigate(`/Admin/Detail/${account.accountID}`)} className="text-blue-600 hover:underline">
+                                                    <button onClick={() => navigate(`/Account/${account.accountID}`)} className="text-blue-600 hover:underline">
                                                         Chi tiết
                                                     </button>
                                                     <button onClick={() => handleDelete(account.accountID)} className="text-red-600 hover:text-red-900">

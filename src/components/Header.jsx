@@ -300,7 +300,7 @@ const Header = () => {
       <nav className="hidden md:flex gap-6 items-center">
         {role === "Admin" ? (
           <>
-            <Link to="/Admin" className="hover:text-orange-400 text-xl">TÀI KHOẢN NHÂN VIÊN</Link>
+            <Link to="/Account" className="hover:text-orange-400 text-xl">TÀI KHOẢN NHÂN VIÊN</Link>
             <Link to="/store" className="hover:text-orange-400 text-xl">CÁC CỬA HÀNG</Link>
             {/* <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link> */}
           </>
@@ -313,7 +313,7 @@ const Header = () => {
                   </button>
                   {designDropdownOpen && (
                     <div className="bg-gray-900">
-                      <Link to="/Manager" className="hover:text-orange-400 text-base">QUẢN LÝ MẪU DECAL</Link><br/>
+                      <Link to="/Decal-template" className="hover:text-orange-400 text-base">QUẢN LÝ MẪU DECAL</Link><br/>
                       <Link to="/Decal-type" className="hover:text-orange-400 text-base">QUẢN LÝ LOẠI DECAL</Link>  
                     </div>
                   )}
@@ -325,9 +325,9 @@ const Header = () => {
 
             {/* Các dropdown khác */}
             <div className="relative group">
-              <button className="hover:text-orange-400 text-xl flex items-center">
+              {/* <button className="hover:text-orange-400 text-xl flex items-center">
                 THIẾT KẾ DECAL <ChevronDown className="ml-2" />
-              </button>
+              </button> */}
               <div className="absolute left-0 top-full w-48 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
                 {/* <Link to="/design/custom" className="block px-4 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link> */}
                 <Link to="/decal-service" className="block px-4 py-2 hover:bg-gray-800">DỊCH VỤ</Link>
