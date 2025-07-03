@@ -43,7 +43,7 @@ const Login = () => {
       toast.success("Đăng nhập thành công!");
 
       setTimeout(() => {
-        navigate(role === "Admin" ? "/order-tracking" : "/");
+        navigate("/change-password");
       }, 1000);
     } catch (err) {
       toast.error("Tài khoản hoặc mật khẩu không chính xác!");
