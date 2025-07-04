@@ -43,7 +43,11 @@ const Login = () => {
       toast.success("Đăng nhập thành công!");
 
       setTimeout(() => {
-        navigate("/change-password");
+        if(role === "Admin"){
+          navigate("/Account");
+        }else{
+          navigate("/change-password");
+        }
       }, 1000);
     } catch (err) {
       toast.error("Tài khoản hoặc mật khẩu không chính xác!");
