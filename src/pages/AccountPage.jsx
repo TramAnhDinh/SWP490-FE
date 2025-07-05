@@ -66,6 +66,17 @@ const AdminPage = () => {
                     'Accept': 'application/json'
                 }
             });
+            // if(!response.ok){
+            //     const errorData = await response.json();
+            //     if(errorData.message?.includes("công việc chưa hoàn thành")){
+            //         toast.error("Không thể xóa! Nhân viên này vẫn còn công việc chưa hoàn thành.");
+            //     }else{
+            //         toast.error(errorData.message || "Xóa tài khoản thất bại!");
+            //     }
+            //     setShowConfirmDialog(false);
+            //     setSelectedAccountId(null);
+            //     return;
+            // }
             toast.success('Xóa tài khoản thành công!');
             fetchAccounts();
             setShowConfirmDialog(false);
