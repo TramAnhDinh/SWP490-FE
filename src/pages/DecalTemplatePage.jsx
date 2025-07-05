@@ -25,7 +25,7 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
                 <h2 className="text-xl font-bold mb-4">{title}</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
+                    {/* <div>
                         <label className="block mb-1 font-medium">Mã Decal</label>
                         <input
                             type="text"
@@ -36,7 +36,7 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
                             disabled={isEdit}
                             required
                         />
-                    </div>
+                    </div> */}
                     <div>
                         <label className="block mb-1 font-medium">Tên Decal</label>
                         <input
@@ -70,7 +70,7 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
                             required
                         />
                     </div>
-                    <div>
+                    {/* <div>
                         <label className="block mb-1 font-medium">Tên Loại Decal</label>
                         <input
                             type="text"
@@ -80,7 +80,7 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
                             className="w-full border border-gray-300 rounded px-3 py-2"
                             required
                         />
-                    </div>
+                    </div> */}
                     <div className="flex justify-end gap-4">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Đóng</button>
                         <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Lưu</button>
@@ -221,11 +221,9 @@ const ManagerPage = () => {
                 <FormPopup
                     title="➕ Thêm Decal Mới"
                     initialData={{
-                        templateID: '',
                         templateName: '',
                         imageURL: '',
                         decalTypeID: '',
-                        decalTypeName: ''
                     }}
                     onSubmit={handleCreateDecal}
                     onClose={() => setShowCreateForm(false)}
