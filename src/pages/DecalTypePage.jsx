@@ -13,7 +13,6 @@ const DecalTypePage = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [selectedDecalTypeId, setSelectedDecalTypeId] = useState(null);
-    const [decalTypeID, setDecalTypeID] = useState("");
     const [decalTypeName, setDecalTypeName] = useState("");
     const [material, setMaterial] = useState("");
     const [width, setWidth] = useState("");
@@ -55,7 +54,7 @@ const DecalTypePage = () => {
 
     const handleCreateDecalType = async (e) => {
         e.preventDefault();
-        if (!decalTypeID || !decalTypeName || !material || !width || !height) {
+        if (!decalTypeName || !material || !width || !height) {
             toast.error("Vui lòng nhập đầy đủ thông tin.");
             return;
         }
@@ -73,7 +72,6 @@ const DecalTypePage = () => {
                     Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    decalTypeID,
                     decalTypeName,
                     material,
                     width: parseFloat(width),
@@ -96,7 +94,6 @@ const DecalTypePage = () => {
     };
 
     const resetForm = () => {
-        setDecalTypeID("");
         setDecalTypeName("");
         setMaterial("");
         setWidth("");
@@ -211,7 +208,6 @@ const DecalTypePage = () => {
                     <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
                         <h3 className="text-lg font-semibold mb-4 text-center">Tạo Decal Type Mới</h3>
                         <form onSubmit={handleCreateDecalType} className="space-y-3">
-                            <input ref={inputRef} type="text" placeholder="Mã decal type" className="w-full border p-2 rounded" value={decalTypeID} onChange={(e) => setDecalTypeID(e.target.value)} />
                             <input type="text" placeholder="Tên decal type" className="w-full border p-2 rounded" value={decalTypeName} onChange={(e) => setDecalTypeName(e.target.value)} />
                             <input type="text" placeholder="Chất liệu" className="w-full border p-2 rounded" value={material} onChange={(e) => setMaterial(e.target.value)} />
                             <input type="number" placeholder="Chiều rộng (m)" className="w-full border p-2 rounded" value={width} onChange={(e) => setWidth(e.target.value)} />
