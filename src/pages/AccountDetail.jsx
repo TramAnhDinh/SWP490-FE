@@ -15,7 +15,7 @@ const AccountDetail = () => {
     const [editedStatus, setEditedStatus] = useState(true);
     const [editedPassword, setEditedPassword] = useState("");
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-
+    
     const fetchAccountDetail = async () => {
         try {
             const response = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Accounts/${id}`, {

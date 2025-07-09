@@ -1,8 +1,11 @@
+
+
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
-import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
+import { FaTrash, FaPlus, FaEdit, FaCar } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
+import VehicleModelLinker from "./VehicleModelLinker";
 
 const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
     const [formData, setFormData] = useState(initialData);
@@ -25,18 +28,6 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
                 <h2 className="text-xl font-bold mb-4">{title}</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* <div>
-                        <label className="block mb-1 font-medium">Mã Decal</label>
-                        <input
-                            type="text"
-                            name="templateID"
-                            value={formData.templateID}
-                            onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
-                            disabled={isEdit}
-                            required
-                        />
-                    </div> */}
                     <div>
                         <label className="block mb-1 font-medium">Tên Decal</label>
                         <input
@@ -70,17 +61,6 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
                             required
                         />
                     </div>
-                    {/* <div>
-                        <label className="block mb-1 font-medium">Tên Loại Decal</label>
-                        <input
-                            type="text"
-                            name="decalTypeName"
-                            value={formData.decalTypeName}
-                            onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
-                            required
-                        />
-                    </div> */}
                     <div className="flex justify-end gap-4">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Đóng</button>
                         <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Lưu</button>
@@ -91,7 +71,7 @@ const FormPopup = ({ title, initialData, onSubmit, onClose, isEdit }) => {
     );
 };
 
-const ManagerPage = () => {
+const DecalTemplatePage = () => {
     const token = useSelector((state) => state.user?.token);
     const [decals, setDecals] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -100,19 +80,40 @@ const ManagerPage = () => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [currentEditData, setCurrentEditData] = useState(null);
+    const [showVehicleLinker, setShowVehicleLinker] = useState(false);
+    const [vehicleTarget, setVehicleTarget] = useState(null);
 
-    const fetchDecals = async () => {
-        try {
-            const response = await fetch('https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            setDecals(data);
-        } catch (error) {
-            console.error('Error fetching decals:', error);
-            toast.error('Lỗi khi tải danh sách decal!');
-        }
-    };
+  const fetchDecals = async () => {
+    try {
+        const response = await fetch('https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const list = await response.json();
+
+        // Gọi chi tiết từng decal template để lấy vehicleModels
+        const detailedDecals = await Promise.all(
+            list.map(async (decal) => {
+                try {
+                    const detailRes = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates/${decal.templateID}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const detail = await detailRes.json();
+                    return { ...decal, vehicleModels: detail.vehicleModels || [] };
+                } catch (err) {
+                    console.error('Lỗi khi lấy chi tiết decal:', err);
+                    return { ...decal, vehicleModels: [] };
+                }
+            })
+        );
+
+        setDecals(detailedDecals);
+    } catch (error) {
+        console.error('Error fetching decals:', error);
+        toast.error('Lỗi khi tải danh sách decal!');
+    }
+};
+
+
 
     useEffect(() => {
         if (token) fetchDecals();
@@ -192,6 +193,11 @@ const ManagerPage = () => {
         }
     };
 
+    const openVehicleLinker = (templateID, templateName) => {
+        setVehicleTarget({ templateID, templateName });
+        setShowVehicleLinker(true);
+    };
+
     const filteredDecals = decals.filter(decal =>
         decal.templateName.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -220,24 +226,29 @@ const ManagerPage = () => {
             {showCreateForm && (
                 <FormPopup
                     title="➕ Thêm Decal Mới"
-                    initialData={{
-                        templateName: '',
-                        imageURL: '',
-                        decalTypeID: '',
-                    }}
+                    initialData={{ templateName: '', imageURL: '', decalTypeID: '' }}
                     onSubmit={handleCreateDecal}
                     onClose={() => setShowCreateForm(false)}
                     isEdit={false}
                 />
             )}
 
-            {showEditForm && (
+            {showEditForm && currentEditData && (
                 <FormPopup
                     title="✏️ Chỉnh Sửa Decal"
                     initialData={currentEditData}
                     onSubmit={handleUpdateDecal}
                     onClose={() => setShowEditForm(false)}
                     isEdit={true}
+                />
+            )}
+
+            {showVehicleLinker && vehicleTarget && (
+                <VehicleModelLinker
+                    token={token}
+                    templateID={vehicleTarget.templateID}
+                    templateName={vehicleTarget.templateName}
+                    onClose={() => setShowVehicleLinker(false)}
                 />
             )}
 
@@ -251,7 +262,13 @@ const ManagerPage = () => {
                     </div>
 
                     <div className="p-6">
-                        <input type="text" placeholder="Tìm kiếm decal..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg" />
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm decal..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg"
+                        />
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
@@ -260,31 +277,47 @@ const ManagerPage = () => {
                                         <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Hình ảnh</th>
                                         <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tên Decal</th>
                                         <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Loại Decal</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase">Dòng Xe Gắn</th>
                                         <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {filteredDecals.length > 0 ? (
-                                        filteredDecals.map(decal => (
-                                            <tr key={decal.templateID} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{decal.templateID}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    <img src={decal.imageURL} alt={decal.templateName} className="w-24 h-16 object-cover rounded" />
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{decal.templateName}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{decal.decalTypeName}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-4">
-                                                    <button onClick={() => handleEdit(decal)} className="text-blue-600 hover:text-blue-900"><FaEdit className="w-5 h-5" /></button>
-                                                    <button onClick={() => handleDelete(decal.templateID)} className="text-red-600 hover:text-red-900"><FaTrash className="w-5 h-5" /></button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-500">Không có decal nào</td>
-                                        </tr>
-                                    )}
-                                </tbody>
+    {filteredDecals.length > 0 ? (
+        filteredDecals.map(decal => (
+            <tr key={decal.templateID} className="hover:bg-gray-50">
+                <td className="px-6 py-4 text-sm font-medium text-gray-900">{decal.templateID}</td>
+                <td className="px-6 py-4">
+                    <img src={decal.imageURL} alt={decal.templateName} className="w-24 h-16 object-cover rounded" />
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">{decal.templateName}</td>
+                <td className="px-6 py-4 text-sm text-gray-900">{decal.decalTypeName}</td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                    {(decal.vehicleModels && decal.vehicleModels.length > 0) ? (
+                        <ul className="list-disc list-inside">
+                            {decal.vehicleModels.map(vm => (
+                                <li key={vm.vehicleModelID}>{vm.vehicleModelName}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <span className="text-gray-500 italic">Chưa gắn</span>
+                    )}
+                </td>
+                <td className="px-6 py-4 text-sm flex gap-3">
+                    <button onClick={() => handleEdit(decal)} className="text-blue-600 hover:text-blue-900"><FaEdit /></button>
+                    <button onClick={() => handleDelete(decal.templateID)} className="text-red-600 hover:text-red-900"><FaTrash /></button>
+                    <button onClick={() => openVehicleLinker(decal.templateID, decal.templateName)} className="text-green-600 hover:text-green-900" title="Gắn dòng xe">
+                        <FaCar />
+                    </button>
+                </td>
+            </tr>
+        ))
+    ) : (
+        <tr>
+            <td colSpan="6" className="px-6 py-4 text-center text-gray-500">Không có decal nào</td>
+        </tr>
+    )}
+</tbody>
+
                             </table>
                         </div>
                     </div>
@@ -294,4 +327,6 @@ const ManagerPage = () => {
     );
 };
 
-export default ManagerPage;
+export default DecalTemplatePage;
+
+                  
