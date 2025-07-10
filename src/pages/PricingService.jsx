@@ -109,7 +109,7 @@ const PricingService = () => {
         </div>
 
         {/* Dán decal ô tô */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <h3 className="text-2xl font-semibold text-[#cc6600] mb-4 text-center">Dịch Vụ Dán Decal Ô Tô</h3>
           <table className="w-full text-center border-collapse">
             <thead>
@@ -135,7 +135,7 @@ const PricingService = () => {
               ))}
             </tbody>
           </table>
-        </div>
+        </div> */}
 
         {/* Phụ thu tháo gỡ decal */}
         <div className="mb-8">
@@ -150,7 +150,7 @@ const PricingService = () => {
             <tbody>
               {[
                 ["Tháo decal xe máy", "300.000đ - 600.000đ"],
-                ["Tháo decal ô tô", "800.000đ - 1.500.000đ"]
+                // ["Tháo decal ô tô", "800.000đ - 1.500.000đ"]
               ].map((item, i) => (
                 <tr key={i} className="odd:bg-[#ffe6cc]">
                   <td className="p-2 border">{item[0]}</td>
