@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { setUser } from "../redux/slices/userSlice";
 import { loadUserCart } from "../redux/slices/cartSlice";
-import axios from "axios";
-import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  User,
+  Lock,
+  Eye,
+  EyeOff,
+  Mail,
+  Shield,
+  ArrowRight,
+  AlertCircle
+} from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import xx from "../assets/xx.jpg";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -17,6 +25,8 @@ const Login = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +37,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://decalxeapi-backend-production.up.railway.app/api/Auth/login",
+        "https://decalxeapi-production.up.railway.app/api/Auth/login",
         { username, password }
       );
 
@@ -43,9 +53,9 @@ const Login = () => {
       toast.success("Đăng nhập thành công!");
 
       setTimeout(() => {
-        if(role === "Admin"){
+        if (role === "Admin") {
           navigate("/Account");
-        }else{
+        } else {
           navigate("/change-password");
         }
       }, 1000);
@@ -87,123 +97,229 @@ const Login = () => {
   };
 
   return (
-    <section className="bg-[#dfa674] min-h-screen flex items-center justify-center px-4">
-      <div className="bg-[#dfa674] rounded-2xl flex max-w-7xl w-full p-12 items-center min-h-[600px]">
-        <div className="w-full md:w-1/2 px-4 md:px-12">
-          <h2 className="font-bold text-4xl text-[#915621]">Đăng nhập</h2>
-          <p className="text-lg mt-4 text-[#915621]">Nếu bạn đã có tài khoản, hãy đăng nhập ngay.</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <div className="max-w-6xl w-full">
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+            {/* Left Side - Login Form */}
+            <div className="p-8 lg:p-12 flex flex-col justify-center">
+              <div className="animate-fade-in">
+                <div className="text-center lg:text-left mb-8">
+                  <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                    Chào mừng trở lại
+                  </h1>
+                  <p className="text-gray-600 text-lg">
+                    Đăng nhập vào tài khoản của bạn để tiếp tục
+                  </p>
+                </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-12">
-            <div className="relative">
-              <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-6 w-6" />
-              <input
-                type="text"
-                className="pl-12 pr-4 py-3 w-full border rounded-xl text-lg"
-                placeholder="Tên đăng nhập"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Tên đăng nhập
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="text"
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Nhập tên đăng nhập"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Mật khẩu
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Nhập mật khẩu"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setShowResetModal(true)}
+                      className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
+                    >
+                      Quên mật khẩu?
+                    </button>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Đang đăng nhập...
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        Đăng nhập
+                        <ArrowRight className="ml-2 w-5 h-5" />
+                      </div>
+                    )}
+                  </button>
+                </form>
+
+                <div className="mt-8 text-center">
+                  <p className="text-gray-600">
+                    Chưa có tài khoản?{" "}
+                    <Link
+                      to="/register"
+                      className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                    >
+                      Đăng ký ngay
+                    </Link>
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="relative">
-              <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-6 w-6" />
-              <input
-                type={showPassword ? "text" : "password"}
-                className="pl-12 pr-12 py-3 w-full border rounded-xl text-lg"
-                placeholder="Mật khẩu"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-
-            <button
-              type="submit"
-              className="bg-[#915621] text-white py-3 rounded-xl hover:scale-105 duration-300 text-lg"
-              disabled={loading}
-            >
-              {loading ? "Đang đăng nhập..." : "Đăng nhập"}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setShowResetModal(true)}
-              className="text-indigo-600 hover:underline text-base"
-            >
-              Quên mật khẩu?
-            </button>
-          </div>
-
-          <div className="mt-6 flex items-center justify-between text-base">
-            <p>Chưa có tài khoản?</p>
-            <a href="/register" className="bg-[#915621] text-white py-2 px-6 rounded-xl hover:scale-105 font-semibold">
-              Đăng ký
-            </a>
-          </div>
-        </div>
-
-        <div className="hidden md:block w-1/2 h-full">
-          <img src={xx} alt="Login" className="rounded-2xl w-full h-[550px] object-cover" />
-        </div>
-
-        {/* Reset Password Modal */}
-        {showResetModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md">
-              <h3 className="text-xl font-bold text-center mb-4">Quên mật khẩu</h3>
-              <input
-                type="text"
-                className="w-full mb-3 border px-3 py-2 rounded"
-                placeholder="Tên đăng nhập"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <input
-                type="password"
-                className="w-full mb-3 border px-3 py-2 rounded"
-                placeholder="Mật khẩu mới"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <input
-                type="password"
-                className="w-full mb-3 border px-3 py-2 rounded"
-                placeholder="Xác nhận mật khẩu mới"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-              <div className="flex justify-end gap-2">
-                <button
-                  onClick={() => setShowResetModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                >
-                  Hủy
-                </button>
-                <button
-                  onClick={handleResetPassword}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  Xác nhận
-                </button>
+            {/* Right Side - Image */}
+            <div className="hidden lg:block relative bg-gradient-to-br from-blue-600 to-purple-600">
+              <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+              <div className="relative h-full flex items-center justify-center p-12">
+                <div className="text-center text-white">
+                  <div className="animate-fade-in">
+                    <div className="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Shield className="w-12 h-12 text-white" />
+                    </div>
+                    <h2 className="text-3xl font-bold mb-4">
+                      DecalPro
+                    </h2>
+                    <p className="text-xl opacity-90 max-w-md">
+                      Hệ thống quản lý chuỗi cửa hàng dịch vụ decal xe chuyên nghiệp
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Reset Password Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-fade-in">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <AlertCircle className="w-8 h-8 text-red-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Đặt lại mật khẩu
+              </h3>
+              <p className="text-gray-600">
+                Nhập thông tin để đặt lại mật khẩu của bạn
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tên đăng nhập
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Nhập tên đăng nhập"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Mật khẩu mới
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nhập mật khẩu mới"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  >
+                    {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Xác nhận mật khẩu mới
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nhập lại mật khẩu mới"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              <button
+                onClick={() => setShowResetModal(false)}
+                className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleResetPassword}
+                className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast Container */}
       <ToastContainer
-        position="bottom-right"
-        autoClose={2000}
+        position="top-right"
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -213,7 +329,7 @@ const Login = () => {
         pauseOnHover
         theme="colored"
       />
-    </section>
+    </div>
   );
 };
 

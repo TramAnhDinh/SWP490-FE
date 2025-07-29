@@ -2,7 +2,19 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getStores } from "../redux/slices/storeService";
-import { MapPin, Trash2 } from "lucide-react";
+import {
+    MapPin,
+    Trash2,
+    Plus,
+    Building2,
+    Search,
+    AlertTriangle,
+    Settings,
+    RefreshCw,
+    Users,
+    Phone,
+    Mail
+} from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,6 +24,7 @@ const StoreListPage = () => {
     const [selectedStoreId, setSelectedStoreId] = useState(null);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [storeName, setStoreName] = useState("");
     const [address, setAddress] = useState("");
@@ -46,6 +59,7 @@ const StoreListPage = () => {
     }, []);
 
     const fetchStores = async () => {
+        setLoading(true);
         try {
             const data = await getStores();
             setStores(data);
@@ -68,7 +82,7 @@ const StoreListPage = () => {
         setCreating(true);
 
         try {
-            const response = await fetch("https://decalxeapi-backend-production.up.railway.app/api/Stores", {
+            const response = await fetch("https://decalxeapi-production.up.railway.app/api/Stores", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -120,25 +134,60 @@ const StoreListPage = () => {
         }
     };
 
-    if (loading) return <div className="text-center mt-10 text-lg">Đang tải cửa hàng...</div>;
+    const filteredStores = stores.filter(store =>
+        store.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        store.address?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const stats = {
+        total: stores.length,
+        active: stores.length, // Giả sử tất cả đều active
+        inactive: 0
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
+                <div className="text-center">
+                    <RefreshCw className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
+                    <p className="text-lg text-gray-600">Đang tải cửa hàng...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="max-w-6xl mx-auto p-4">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
             <ToastContainer position="top-right" autoClose={3000} />
 
             {/* Modal Xác Nhận Xóa */}
             {showConfirmDialog && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
-                        <h3 className="text-xl font-bold mb-4">Xác nhận xóa</h3>
-                        <p className="text-gray-600 mb-6">Bạn có chắc chắn muốn xóa cửa hàng này?</p>
-                        <div className="flex justify-end gap-4">
-                            <button onClick={() => setShowConfirmDialog(false)} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-                                Hủy
-                            </button>
-                            <button onClick={handleConfirmDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                                Xóa
-                            </button>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full animate-fade-in">
+                        <div className="p-6">
+                            <div className="flex items-center space-x-3 mb-4">
+                                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                    <AlertTriangle className="w-6 h-6 text-red-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900">Xác nhận xóa</h3>
+                                    <p className="text-gray-600">Bạn có chắc chắn muốn xóa cửa hàng này?</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowConfirmDialog(false)}
+                                    className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                                >
+                                    Hủy
+                                </button>
+                                <button
+                                    onClick={handleConfirmDelete}
+                                    className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors"
+                                >
+                                    Xóa
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,83 +195,208 @@ const StoreListPage = () => {
 
             {/* Modal Tạo Cửa Hàng */}
             {showCreateModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
-                        <h3 className="text-xl font-bold mb-4 text-center">Tạo cửa hàng mới</h3>
-                        <form onSubmit={handleCreateStore} className="flex flex-col gap-4">
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                placeholder="Tên cửa hàng"
-                                value={storeName}
-                                onChange={(e) => setStoreName(e.target.value)}
-                                className="border px-4 py-2 rounded"
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="Địa chỉ cửa hàng"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                                className="border px-4 py-2 rounded"
-                                required
-                            />
-                            <div className="flex justify-end gap-3 mt-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowCreateModal(false)}
-                                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                                >
-                                    Hủy
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-                                    disabled={creating}
-                                >
-                                    {creating ? "Đang tạo..." : "Tạo"}
-                                </button>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full animate-fade-in">
+                        <div className="p-6">
+                            <div className="flex items-center space-x-3 mb-6">
+                                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <Building2 className="w-6 h-6 text-green-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-900">Tạo cửa hàng mới</h3>
+                                    <p className="text-gray-600">Thêm cửa hàng mới vào hệ thống</p>
+                                </div>
                             </div>
-                        </form>
+                            <form onSubmit={handleCreateStore} className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Tên cửa hàng
+                                    </label>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        placeholder="Nhập tên cửa hàng"
+                                        value={storeName}
+                                        onChange={(e) => setStoreName(e.target.value)}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Địa chỉ cửa hàng
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Nhập địa chỉ cửa hàng"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        required
+                                    />
+                                </div>
+                                <div className="flex gap-3 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowCreateModal(false)}
+                                        className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                                    >
+                                        Hủy
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="flex-1 px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                                        disabled={creating}
+                                    >
+                                        {creating ? (
+                                            <>
+                                                <RefreshCw className="w-5 h-5 animate-spin mr-2" />
+                                                Đang tạo...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Plus className="w-5 h-5 mr-2" />
+                                                Tạo
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}
 
-            <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Quản Lý Cửa Hàng</h1>
-
-            <div className="flex justify-center mb-8">
-                <button
-                    onClick={() => setShowCreateModal(true)}
-                    className="bg-green-500 text-white py-2 px-6 rounded-xl hover:bg-green-600"
-                >
-                    + Tạo Cửa Hàng
-                </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {stores.map((store) => (
-                    <div
-                        key={store.storeID}
-                        className="border border-gray-200 p-6 rounded-2xl shadow-md bg-white flex flex-col justify-center items-center aspect-square hover:shadow-xl hover:scale-105 transition-transform duration-300 relative"
-                    >
-                        <div
-                            onClick={() => navigate(`/Stores/${store.storeID}`)}
-                            className="flex flex-col justify-center items-center cursor-pointer w-full h-full"
-                        >
-                            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 mb-4">
-                                <MapPin className="text-yellow-500 w-8 h-8" />
-                            </div>
-                            <h2 className="text-xl font-bold text-gray-800 text-center mb-2">{store.storeName}</h2>
-                            <p className="text-gray-600 text-center">{store.address || "Chưa cập nhật địa chỉ"}</p>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Header */}
+                <div className="mb-8 animate-fade-in">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                                Quản lý cửa hàng
+                            </h1>
+                            <p className="text-gray-600">
+                                Quản lý tất cả cửa hàng trong hệ thống
+                            </p>
                         </div>
                         <button
-                            onClick={() => handleDelete(store.storeID)}
-                            className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+                            onClick={() => setShowCreateModal(true)}
+                            className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
                         >
-                            <Trash2 size={16} />
+                            <Plus className="w-5 h-5" />
+                            <span>Tạo cửa hàng</span>
                         </button>
                     </div>
-                ))}
+
+                    {/* Stats Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Tổng cửa hàng</p>
+                                    <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+                                </div>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <Building2 className="w-6 h-6 text-blue-600" />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Đang hoạt động</p>
+                                    <p className="text-3xl font-bold text-green-600">{stats.active}</p>
+                                </div>
+                                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <Users className="w-6 h-6 text-green-600" />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Không hoạt động</p>
+                                    <p className="text-3xl font-bold text-red-600">{stats.inactive}</p>
+                                </div>
+                                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                    <AlertTriangle className="w-6 h-6 text-red-600" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Search */}
+                <div className="mb-8 animate-fade-in">
+                    <div className="relative max-w-md">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm cửa hàng..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        />
+                    </div>
+                </div>
+
+                {/* Stores Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in">
+                    {filteredStores.length > 0 ? (
+                        filteredStores.map((store) => (
+                            <div
+                                key={store.storeID}
+                                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 relative group"
+                            >
+                                <div
+                                    onClick={() => navigate(`/Stores/${store.storeID}`)}
+                                    className="p-6 cursor-pointer"
+                                >
+                                    <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 mb-4 group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-300">
+                                        <MapPin className="text-blue-600 w-8 h-8" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-gray-900 text-center mb-3 group-hover:text-blue-600 transition-colors">
+                                        {store.storeName}
+                                    </h3>
+                                    <p className="text-gray-600 text-center text-sm leading-relaxed">
+                                        {store.address || "Chưa cập nhật địa chỉ"}
+                                    </p>
+
+                                    {/* Store Info */}
+                                    <div className="mt-4 pt-4 border-t border-gray-100">
+                                        <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
+                                            <div className="flex items-center space-x-1">
+                                                <Phone className="w-3 h-3" />
+                                                <span>Liên hệ</span>
+                                            </div>
+                                            <div className="flex items-center space-x-1">
+                                                <Mail className="w-3 h-3" />
+                                                <span>Email</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Delete Button */}
+                                <button
+                                    onClick={() => handleDelete(store.storeID)}
+                                    className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                    title="Xóa cửa hàng"
+                                >
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="col-span-full text-center py-12">
+                            <div className="text-gray-500">
+                                <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                                <p className="text-lg font-medium">Không có cửa hàng nào</p>
+                                <p className="text-sm">Thử thay đổi từ khóa tìm kiếm hoặc tạo cửa hàng mới</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
