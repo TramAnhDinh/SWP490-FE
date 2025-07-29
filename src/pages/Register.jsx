@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import xx from "../assets/xx.jpg";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  User,
+  Lock,
+  Shield,
+  Users,
+  Palette,
+  ShoppingCart,
+  Wrench,
+  ArrowRight,
+  AlertTriangle,
+  CheckCircle
+} from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,6 +23,7 @@ const Register = () => {
   });
 
   const [availableRoles, setAvailableRoles] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const getRoleLabel = (role) => {
@@ -28,6 +40,23 @@ const Register = () => {
         return "Kỹ thuật viên";
       default:
         return role;
+    }
+  };
+
+  const getRoleIcon = (role) => {
+    switch (role) {
+      case "ROLE_ADMIN":
+        return Shield;
+      case "ROLE_MANAGER":
+        return Users;
+      case "ROLE_DESIGNER":
+        return Palette;
+      case "ROLE_SALES":
+        return ShoppingCart;
+      case "ROLE_TECHNICIAN":
+        return Wrench;
+      default:
+        return User;
     }
   };
 
@@ -68,15 +97,18 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("Vui lòng đăng nhập trước.");
+      setLoading(false);
       return;
     }
 
     if (!formData.username || !formData.password || !formData.roleID) {
       toast.error("Vui lòng điền đầy đủ thông tin.");
+      setLoading(false);
       return;
     }
 
@@ -105,82 +137,184 @@ const Register = () => {
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       toast.error(err.message || "Lỗi kết nối đến máy chủ.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section className="bg-[#dfa674] min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="bg-[#dfa674] rounded-2xl flex max-w-7xl w-full mx-auto p-12 items-center min-h-[600px]">
-        <div className="w-full md:w-1/2 px-4 md:px-12">
-          <h2 className="font-bold text-4xl text-[#915621]">Đăng ký</h2>
-          <p className="text-lg mt-4 text-[#915621]">
-            Chỉ admin mới được tạo tài khoản
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <div className="max-w-6xl w-full">
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+            {/* Left Side - Register Form */}
+            <div className="p-8 lg:p-12 flex flex-col justify-center">
+              <div className="animate-fade-in">
+                <div className="text-center lg:text-left mb-8">
+                  <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                    Tạo tài khoản mới
+                  </h1>
+                  <p className="text-gray-600 text-lg">
+                    Chỉ admin mới được tạo tài khoản cho nhân viên
+                  </p>
+                </div>
 
-          {availableRoles.length === 0 ? (
-            <div className="mt-10 text-red-700 text-xl font-semibold">
-              Bạn không có quyền tạo tài khoản.
+                {availableRoles.length === 0 ? (
+                  <div className="animate-fade-in bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                    <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-red-700 mb-2">
+                      Không có quyền
+                    </h3>
+                    <p className="text-red-600">
+                      Bạn không có quyền tạo tài khoản. Chỉ admin mới có thể tạo tài khoản cho nhân viên.
+                    </p>
+                    <Link
+                      to="/login"
+                      className="inline-block mt-4 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors"
+                    >
+                      Quay lại đăng nhập
+                    </Link>
+                  </div>
+                ) : (
+                  <form onSubmit={handleRegister} className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Tên đăng nhập
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                          type="text"
+                          name="username"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          placeholder="Nhập tên đăng nhập"
+                          value={formData.username}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Mật khẩu
+                      </label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                          type="password"
+                          name="password"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          placeholder="Nhập mật khẩu"
+                          value={formData.password}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Vai trò
+                      </label>
+                      <div className="relative">
+                        <Shield className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <select
+                          name="roleID"
+                          value={formData.roleID}
+                          onChange={handleChange}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white"
+                          required
+                        >
+                          <option value="">-- Chọn vai trò --</option>
+                          {availableRoles.map((role) => {
+                            const IconComponent = getRoleIcon(role);
+                            return (
+                              <option key={role} value={role}>
+                                {getRoleLabel(role)}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <div className="flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          Đang tạo tài khoản...
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center">
+                          Tạo tài khoản
+                          <ArrowRight className="ml-2 w-5 h-5" />
+                        </div>
+                      )}
+                    </button>
+                  </form>
+                )}
+
+                <div className="mt-8 text-center">
+                  <p className="text-gray-600">
+                    Đã có tài khoản?{" "}
+                    <Link
+                      to="/login"
+                      className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                    >
+                      Đăng nhập ngay
+                    </Link>
+                  </p>
+                </div>
+              </div>
             </div>
-          ) : (
-            <form onSubmit={handleRegister} className="flex flex-col gap-6 mt-12">
-              <input
-                type="text"
-                name="username"
-                placeholder="Tên đăng nhập"
-                value={formData.username}
-                onChange={handleChange}
-                className="pl-4 pr-4 py-3 w-full border rounded-xl text-lg"
-                required
-              />
 
-              <input
-                type="password"
-                name="password"
-                placeholder="Mật khẩu"
-                value={formData.password}
-                onChange={handleChange}
-                className="pl-4 pr-4 py-3 w-full border rounded-xl text-lg"
-                required
-              />
-
-              <select
-                name="roleID"
-                value={formData.roleID}
-                onChange={handleChange}
-                className="pl-4 pr-4 py-3 w-full border rounded-xl text-lg bg-white"
-                required
-              >
-                <option value="">-- Chọn vai trò --</option>
-                {availableRoles.map((role) => (
-                  <option key={role} value={role}>
-                    {getRoleLabel(role)}
-                  </option>
-                ))}
-              </select>
-
-              <button
-                type="submit"
-                className="bg-[#915621] text-white py-3 rounded-xl hover:scale-105 duration-300 hover:bg-[#002c7424] font-medium text-lg"
-              >
-                Đăng ký
-              </button>
-            </form>
-          )}
-        </div>
-
-        <div className="md:block hidden w-1/2 h-full">
-          <img
-            className="rounded-2xl w-full h-[550px] object-cover"
-            src={xx}
-            alt="Register illustration"
-          />
+            {/* Right Side - Role Information */}
+            <div className="hidden lg:block relative bg-gradient-to-br from-blue-600 to-purple-600">
+              <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+              <div className="relative h-full flex items-center justify-center p-12">
+                <div className="text-center text-white">
+                  <div className="animate-fade-in">
+                    <div className="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Users className="w-12 h-12 text-white" />
+                    </div>
+                    <h2 className="text-3xl font-bold mb-6">
+                      Quản lý nhân viên
+                    </h2>
+                    <div className="space-y-4 text-left max-w-sm">
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="w-5 h-5 text-green-300" />
+                        <span className="text-sm">Quản lý cửa hàng</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="w-5 h-5 text-green-300" />
+                        <span className="text-sm">Thiết kế decal</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="w-5 h-5 text-green-300" />
+                        <span className="text-sm">Bán hàng</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="w-5 h-5 text-green-300" />
+                        <span className="text-sm">Kỹ thuật lắp đặt</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Toast Container */}
       <ToastContainer
-        position="bottom-right"
-        autoClose={2000}
+        position="top-right"
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -190,7 +324,7 @@ const Register = () => {
         pauseOnHover
         theme="colored"
       />
-    </section>
+    </div>
   );
 };
 

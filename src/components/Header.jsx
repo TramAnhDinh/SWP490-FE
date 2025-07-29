@@ -1,197 +1,20 @@
-// import React, { useState } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { ShoppingCart, Menu, ChevronDown } from "lucide-react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { logout } from "../redux/slices/userSlice";
-// import logo from "../assets/logo.png";
-
-// const Header = () => {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   // Lấy thông tin từ Redux
-//   const { role, isAuthenticated, username } = useSelector((state) => state.user);
-//   console.log("Auth State:", { role, isAuthenticated, username });
-
-//   // Lấy giỏ hàng từ Redux
-//   const cart = useSelector((state) => state.cart.items ?? []);
-//   const cartItemCount = useSelector((state) => state.cart.items.length);
-
-//   // Xử lý logout
-//   const handleLogout = () => {
-//     localStorage.removeItem("token");
-//     localStorage.removeItem("user");
-//     dispatch(logout());
-//     navigate("/login");
-//   };
-
-//   // State cho menu trên mobile
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const [designDropdownOpen, setDesignDropdownOpen] = useState(false);
-//   const [decal, setDecal] = useState(false);
-
-//   return (
-//     <header className="bg-black text-white py-2 px-6 flex items-center justify-between relative">
-//       {/* Logo */}
-//       <Link to="/" className="flex items-center space-x-2">
-//         <img src={logo} alt="Logo" className="w-16 h-16" />
-//         <span className="text-3xl font-bold text-white">Decal</span>
-//       </Link>
-
-//       {/* Nút Menu Dropdown (Mobile) */}
-//       <div className="relative md:hidden">
-//         <button className="text-white text-3xl" onClick={() => setMenuOpen(!menuOpen)}>
-//           <Menu />
-//         </button>
-
-//         {/* Dropdown Menu */}
-//         {menuOpen && (
-//           <div className="absolute right-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-lg z-50">
-//             {role !== "staff" && (
-//               <>
-//                 <Link to="/" className="block px-4 py-2 hover:bg-gray-800">TRANG CHỦ</Link>
-
-//                 {/* Dropdown Decal */}
-//                 <div>
-//                   <button className="block w-full text-left px-4 py-2 hover:bg-gray-800 flex items-center justify-between"
-//                     onClick={() => setDecal(!decal)}>
-//                     DECAL <ChevronDown />
-//                   </button>
-//                   {decal && (
-//                     <div className="bg-gray-900">
-//                       <Link to="/design" className="block px-6 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link>
-//                       <Link to="/design/templates" className="block px-6 py-2 hover:bg-gray-800">MẪU CÓ SẴN</Link>
-//                     </div>
-//                   )}
-//                 </div>
-
-//                 {/* Dropdown Thiết kế áo */}
-//                 <div>
-//                   <button className="block w-full text-left px-4 py-2 hover:bg-gray-800 flex items-center justify-between"
-//                     onClick={() => setDesignDropdownOpen(!designDropdownOpen)}>
-//                     THIẾT KẾ DECAL <ChevronDown />
-//                   </button>
-//                   {designDropdownOpen && (
-//                     <div className="bg-gray-900">
-//                       <Link to="/design" className="block px-6 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link>
-//                       <Link to="/design/templates" className="block px-6 py-2 hover:bg-gray-800">SẢN PHẨM</Link>
-//                     </div>
-//                   )}
-//                 </div>
-
-//                 <Link to="/lien-he" className="block px-4 py-2 hover:bg-gray-800">LIÊN HỆ</Link>
-//                 <Link to="/cart" className="block px-4 py-2 hover:bg-gray-800 flex items-center">
-//                   <ShoppingCart />
-//                   {totalItems > 0 && (
-//                     <span className="ml-2 bg-red-500 text-white rounded-full text-xs px-2">
-//                       {totalItems}
-//                     </span>
-//                   )}
-//                 </Link>
-//               </>
-//             )}
-
-//             {isAuthenticated ? (
-//               <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-800">
-//                 ĐĂNG XUẤT
-//               </button>
-//             ) : (
-//               <>
-//                 <Link to="/login" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG NHẬP</Link>
-//                 <Link to="/register" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG KÝ</Link>
-//               </>
-//             )}
-//           </div>
-//         )}
-//       </div>
-
-//       {/* Menu trên PC */}
-//       <nav className="hidden md:flex gap-6 items-center">
-//         {role === "staff" ? (
-//           <>
-//             <Link to="/staff" className="hover:text-orange-400 text-xl">TRANG NHÂN VIÊN</Link>
-//             <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link>
-//           </>
-//         ) : (
-//           <>
-//             <Link to="/" className="hover:text-orange-400 text-xl">TRANG CHỦ</Link>
-
-//             {/* Các dropdown khác */}
-//             <div className="relative group">
-//               <button className="hover:text-orange-400 text-xl flex items-center">
-//                 THIẾT KẾ DECAL <ChevronDown className="ml-2" />
-//               </button>
-//               <div className="absolute left-0 top-full w-48 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-//                 <Link to="/design/custom" className="block px-4 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link>
-//                 <Link to="/design/mau-co-san" className="block px-4 py-2 hover:bg-gray-800">SẢN PHẨM</Link>
-//               </div>
-//             </div>
-
-//             <div className="relative group">
-//               <button className="hover:text-orange-400 text-xl flex items-center">
-//                 DECAL <ChevronDown className="ml-2" />
-//               </button>
-//               <div className="absolute left-0 top-full max-w-64 w-56 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-//                 <Link to="/design/bang-gia-dong-phuc" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DECAL XE MÁY</Link>
-//                 <Link to="/design/bang-gia-ao-lop" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DECAL XE HƠI</Link>
-//                 <Link to="/design/bang-gia-phu-kien" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ PHỤ KIỆN</Link>
-//                 <Link to="/design/bang-gia-dich-vu" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DỊCH VỤ</Link>
-//               </div>
-//             </div>
-
-//             <div className="relative group">
-//               <button className="hover:text-orange-400 text-xl flex items-center">
-//                 BLOG <ChevronDown className="ml-2" />
-//               </button>
-//               <div className="absolute left-0 top-full max-w-64 w-56 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-//                 <Link to="/blog" className="block px-4 py-2 hover:bg-gray-800">THÔNG TIN</Link>
-//                 <Link to="/blog/class" className="block px-4 py-2 hover:bg-gray-800">DECAL</Link>
-//                 <Link to="/blog/b" className="block px-4 py-2 hover:bg-gray-800">CẨM NANG</Link>
-//               </div>
-//             </div>
-
-//             <Link to="/lien-he" className="hover:text-orange-400 text-xl">LIÊN HỆ</Link>
-//             <Link to="/cart" className="hover:text-orange-400 relative">
-//               <ShoppingCart />
-//               {cartItemCount > 0 && (
-//                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-2">
-//                   {cartItemCount}
-//                 </span>
-//               )}
-//             </Link>
-//           </>
-//         )}
-
-//         {/* Hiển thị Trang Cá Nhân */}
-//         {isAuthenticated && (
-//           <div className="relative group">
-//             <button className="hover:text-orange-400 text-xl flex items-center">
-//               {username || "TRANG CÁ NHÂN"} <ChevronDown className="ml-2" />
-//             </button>
-//             <div className="absolute right-0 top-full w-48 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-//               {role === "member" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
-//               {role === "staff" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
-//               <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-800">ĐĂNG XUẤT</button>
-//             </div>
-//           </div>
-//         )}
-
-//         {!isAuthenticated && (
-//           <>
-//             <Link to="/login" className="hover:text-orange-400 text-xl">ĐĂNG NHẬP</Link>
-//             <Link to="/register" className="hover:text-orange-400 text-xl">ĐĂNG KÝ</Link>
-//           </>
-//         )}
-//       </nav>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, Menu, ChevronDown } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  ShoppingCart,
+  Menu,
+  X,
+  ChevronDown,
+  User,
+  Settings,
+  LogOut,
+  Store,
+  Users,
+  Palette,
+  Home,
+  Phone,
+  FileText
+} from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/slices/userSlice";
 import logo from "../assets/logo.png";
@@ -199,14 +22,21 @@ import logo from "../assets/logo.png";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Lấy thông tin từ Redux
   const { role, isAuthenticated, username } = useSelector((state) => state.user);
-  console.log("Auth State:", { role, isAuthenticated, username });
-
-  // Lấy giỏ hàng từ Redux
-  const cart = useSelector((state) => state.cart.items ?? []);
   const cartItemCount = useSelector((state) => state.cart.items.length);
+
+  // State cho mobile menu
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  // Đóng mobile menu khi chuyển trang
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
+  }, [location.pathname]);
 
   // Xử lý logout
   const handleLogout = () => {
@@ -216,192 +46,189 @@ const Header = () => {
     navigate("/login");
   };
 
-  // State cho menu trên mobile
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [designDropdownOpen, setDesignDropdownOpen] = useState(false);
-  const [decal, setDecal] = useState(false);
+  // Menu items cho từng role
+  const getMenuItems = () => {
+    if (role === "Admin") {
+      return [
+        { name: "Quản lý tài khoản", href: "/Account", icon: Users },
+        { name: "Quản lý cửa hàng", href: "/store", icon: Store },
+        { name: "Quản lý nhân viên", href: "/employees", icon: Users },
+      ];
+    } else if (role === "Manager") {
+      return [
+        { name: "Mẫu Decal", href: "/Decal-template", icon: FileText },
+        { name: "Loại Decal", href: "/Decal-type", icon: Palette },
+      ];
+    } else {
+      return [
+        { name: "Trang chủ", href: "/", icon: Home },
+        { name: "Dịch vụ", href: "/decal-service", icon: Palette },
+        { name: "Liên hệ", href: "/lien-he", icon: Phone },
+      ];
+    }
+  };
+
+  const menuItems = getMenuItems();
 
   return (
-    <header className="bg-black text-white py-2 px-6 flex items-center justify-between relative">
-      {/* Logo */}
-      <Link to="/" className="flex items-center space-x-2">
-        <img src={logo} alt="Logo" className="w-16 h-16" />
-        <span className="text-3xl font-bold text-white">Decal</span>
-      </Link>
-
-      {/* Nút Menu Dropdown (Mobile) */}
-      <div className="relative md:hidden">
-        <button className="text-white text-3xl" onClick={() => setMenuOpen(!menuOpen)}>
-          <Menu />
-        </button>
-
-        {/* Dropdown Menu */}
-        {menuOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-lg z-50">
-            {role !== "Admin" && (
-              <>
-                <Link to="/" className="block px-4 py-2 hover:bg-gray-800">TRANG CHỦ</Link>
-
-                {/* Dropdown Decal */}
-                <div>
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-800 flex items-center justify-between"
-                    onClick={() => setDecal(!decal)}>
-                    DECAL <ChevronDown />
-                  </button>
-                  {decal && (
-                    <div className="bg-gray-900">
-                      <Link to="/design" className="block px-6 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link>
-                      <Link to="/design/templates" className="block px-6 py-2 hover:bg-gray-800">MẪU CÓ SẴN</Link>
-                    </div>
-                  )}
-                </div>
-
-                {/* Dropdown Thiết kế áo */}
-                <div>
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-800 flex items-center justify-between"
-                    onClick={() => setDesignDropdownOpen(!designDropdownOpen)}>
-                    THIẾT KẾ DECAL <ChevronDown />
-                  </button>
-                  {designDropdownOpen && (
-                    <div className="bg-gray-900">
-                      <Link to="/design" className="block px-6 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link>
-                      <Link to="/design/templates" className="block px-6 py-2 hover:bg-gray-800">SẢN PHẨM</Link>
-                    </div>
-                  )}
-                </div>
-
-                <Link to="/lien-he" className="block px-4 py-2 hover:bg-gray-800">LIÊN HỆ</Link>
-                {/* <Link to="/cart" className="block px-4 py-2 hover:bg-gray-800 flex items-center">
-                  <ShoppingCart />
-                  {totalItems > 0 && (
-                    <span className="ml-2 bg-red-500 text-white rounded-full text-xs px-2">
-                      {totalItems}
-                    </span>
-                  )}
-                </Link> */}
-              </>
-            )}
-
-            {isAuthenticated ? (
-              <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-800">
-                ĐĂNG XUẤT
-              </button>
-            ) : (
-              <>
-                <Link to="/login" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG NHẬP</Link>
-                <Link to="/register" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG KÝ</Link>
-              </>
-            )}
+    <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex items-center space-x-3 animate-fade-in">
+            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <img src={logo} alt="Logo" className="w-10 h-10" />
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                DecalPro
+              </span>
+            </Link>
           </div>
-        )}
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-blue-50"
+              >
+                <item.icon className="w-4 h-4" />
+                <span>{item.name}</span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right side - User menu & Cart */}
+          <div className="flex items-center space-x-4">
+            {/* Cart icon (only for non-admin users) */}
+            {role !== "Admin" && role !== "Manager" && (
+              <Link
+                to="/cart"
+                className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              >
+                <ShoppingCart className="w-6 h-6" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+            )}
+
+            {/* User menu */}
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-blue-50"
+                >
+                  <User className="w-5 h-5" />
+                  <span>{username || "Tài khoản"}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 animate-fade-in">
+                    {role === "Admin" && (
+                      <Link
+                        to="/register"
+                        className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                      >
+                        <Users className="w-4 h-4" />
+                        <span>Đăng ký nhân viên</span>
+                      </Link>
+                    )}
+
+                    <Link
+                      to="/change-password"
+                      className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span>Đổi mật khẩu</span>
+                    </Link>
+
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center space-x-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left transition-colors duration-200"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Đăng xuất</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/login"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-blue-50"
+                >
+                  Đăng nhập
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:shadow-lg"
+                >
+                  Đăng ký
+                </Link>
+              </div>
+            )}
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Menu trên PC */}
-      <nav className="hidden md:flex gap-6 items-center">
-        {role === "Admin" ? (
-          <>
-            <Link to="/Account" className="hover:text-orange-400 text-xl">TÀI KHOẢN NHÂN VIÊN</Link>
-            <Link to="/store" className="hover:text-orange-400 text-xl">CÁC CỬA HÀNG</Link>
-            <Link to="/employees" className="hover:text-orange-400 text-xl">NHÂN VIÊN</Link>
-            {/* <Link to="/order-tracking" className="hover:text-orange-400 text-xl">THEO DÕI ĐƠN HÀNG</Link> */}
-          </>
-        ) : role === "Manager" ? (
-          <>
-            <div>
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-800 flex items-center justify-between"
-                    onClick={() => setDesignDropdownOpen(!designDropdownOpen)}>
-                    THIẾT KẾ DECAL <ChevronDown />
-                  </button>
-                  {designDropdownOpen && (
-                    <div className="bg-gray-900">
-                      <Link to="/Decal-template" className="hover:text-orange-400 text-base">QUẢN LÝ MẪU DECAL</Link><br/>
-                      <Link to="/Decal-type" className="hover:text-orange-400 text-base">QUẢN LÝ LOẠI DECAL</Link>  
-                    </div>
-                  )}
-                </div>
-          </>
-        ) : (
-          <>
-            <Link to="/" className="hover:text-orange-400 text-xl">TRANG CHỦ</Link>
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200 animate-slide-in">
+          <div className="px-4 py-6 space-y-4">
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-blue-50"
+              >
+                <item.icon className="w-5 h-5" />
+                <span>{item.name}</span>
+              </Link>
+            ))}
 
-            {/* Các dropdown khác */}
-            <div className="relative group">
-              {/* <button className="hover:text-orange-400 text-xl flex items-center">
-                THIẾT KẾ DECAL <ChevronDown className="ml-2" />
-              </button> */}
-              <div className="absolute left-0 top-full w-48 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-                {/* <Link to="/design/custom" className="block px-4 py-2 hover:bg-gray-800">TUỲ CHỈNH</Link> */}
-                <Link to="/decal-service" className="block px-4 py-2 hover:bg-gray-800">DỊCH VỤ</Link>
-              </div>
-            </div>
+            {role !== "Admin" && role !== "Manager" && (
+              <Link
+                to="/cart"
+                className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-blue-50"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                <span>Giỏ hàng ({cartItemCount})</span>
+              </Link>
+            )}
 
-            <div className="relative group">
-              <button className="hover:text-orange-400 text-xl flex items-center">
-                DECAL <ChevronDown className="ml-2" />
-              </button>
-              <div className="absolute left-0 top-full max-w-64 w-56 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-                <Link to="/design/bang-gia-dong-phuc" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DECAL XE MÁY</Link>
-                {/* <Link to="/design/bang-gia-ao-lop" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DECAL XE HƠI</Link> */}
-                {/* <Link to="/design/bang-gia-phu-kien" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ PHỤ KIỆN</Link> */}
-                <Link to="/design/bang-gia-dich-vu" className="block px-4 py-2 hover:bg-gray-800">BẢNG GIÁ DỊCH VỤ</Link>
-              </div>
-            </div>
-
-            {/* <div className="relative group">
-              <button className="hover:text-orange-400 text-xl flex items-center">
-                BLOG <ChevronDown className="ml-2" />
-              </button>
-              <div className="absolute left-0 top-full max-w-64 w-56 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-                <Link to="/blog" className="block px-4 py-2 hover:bg-gray-800">THÔNG TIN</Link>
-                <Link to="/blog/class" className="block px-4 py-2 hover:bg-gray-800">DECAL</Link>
-                <Link to="/blog/b" className="block px-4 py-2 hover:bg-gray-800">CẨM NANG</Link>
-              </div>
-            </div> */}
-
-            <Link to="/lien-he" className="hover:text-orange-400 text-xl">LIÊN HỆ</Link>
-            {/* <Link to="/cart" className="hover:text-orange-400 relative"> */}
-              {/* <ShoppingCart /> */}
-              {/* {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-2">
-                  {cartItemCount}
-                </span>
-              )} */}
-            {/* </Link> */}
-          </>
-        )}
-
-        {/* Hiển thị Trang Cá Nhân */}
-        {isAuthenticated && (
-          <div className="relative group">
-            <button className="hover:text-orange-400 text-xl flex items-center">
-              {username || "TRANG CÁ NHÂN"} <ChevronDown className="ml-2" />
-            </button>
-            <div className="absolute right-0 top-full w-48 bg-black border border-gray-700 rounded-lg hidden group-hover:block z-50">
-              {role === "ROLE_ADMIN" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
-              {role === "ROLE_MANAGER" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
-              {role === "ROLE_DESIGNER" && <Link to="/member" className="block px-4 py-2 hover:bg-gray-800">TRANG CÁ NHÂN</Link>}
-              {/* Nút Đăng Ký hiện sau khi đã login */}
-              {role === "Admin" && (
-                 <Link to="/register" className="block px-4 py-2 hover:bg-gray-800">
-                    ĐĂNG KÝ TÀI KHOẢN CHO NHÂN VIÊN
+            {!isAuthenticated && (
+              <div className="pt-4 border-t border-gray-200 space-y-2">
+                <Link
+                  to="/login"
+                  className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-blue-50"
+                >
+                  Đăng nhập
                 </Link>
-              )}
-
-              {/* <Link to="/register" className="block px-4 py-2 hover:bg-gray-800">ĐĂNG KÝ TÀI KHOẢN CHO NHÂN VIÊN</Link> */}
-              <Link to="/change-password" className="block px-4 py-2 hover:bg-gray-800"> ĐỔI MẬT KHẨU</Link>
-
-              <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-800">ĐĂNG XUẤT</button>
-            </div>
+                <Link
+                  to="/register"
+                  className="block bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                >
+                  Đăng ký
+                </Link>
+              </div>
+            )}
           </div>
-        )}
-
-        {!isAuthenticated && (
-          <>
-            <Link to="/login" className="hover:text-orange-400 text-xl">ĐĂNG NHẬP</Link>
-            <Link to="/register" className="hover:text-orange-400 text-xl">ĐĂNG KÝ</Link>
-          </>
-        )}
-      </nav>
+        </div>
+      )}
     </header>
   );
 };
