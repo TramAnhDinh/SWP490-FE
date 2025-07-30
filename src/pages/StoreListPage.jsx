@@ -35,6 +35,7 @@ const StoreListPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("StoreListPage mounted, token:", token ? "Có token" : "Không có token");
         fetchStores();
     }, []);
 
@@ -61,10 +62,12 @@ const StoreListPage = () => {
     const fetchStores = async () => {
         setLoading(true);
         try {
+            console.log("Đang fetch stores với token:", token ? "Có token" : "Không có token");
             const data = await getStores();
+            console.log("Stores data:", data);
             setStores(data);
         } catch (error) {
-            console.error("Không thể load cửa hàng.");
+            console.error("Không thể load cửa hàng.", error);
             toast.error("Không thể load cửa hàng.");
         } finally {
             setLoading(false);
@@ -144,6 +147,24 @@ const StoreListPage = () => {
         active: stores.length, // Giả sử tất cả đều active
         inactive: 0
     };
+
+    if (!token) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
+                <div className="text-center">
+                    <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                    <h2 className="text-xl font-bold text-gray-900 mb-2">Cần đăng nhập</h2>
+                    <p className="text-gray-600 mb-4">Vui lòng đăng nhập để xem danh sách cửa hàng</p>
+                    <button
+                        onClick={() => navigate('/login')}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                    >
+                        Đăng nhập
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     if (loading) {
         return (
@@ -393,6 +414,12 @@ const StoreListPage = () => {
                                 <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                                 <p className="text-lg font-medium">Không có cửa hàng nào</p>
                                 <p className="text-sm">Thử thay đổi từ khóa tìm kiếm hoặc tạo cửa hàng mới</p>
+                                <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+                                    <p className="text-xs text-gray-600">Debug info:</p>
+                                    <p className="text-xs text-gray-600">Total stores: {stores.length}</p>
+                                    <p className="text-xs text-gray-600">Search term: "{searchTerm}"</p>
+                                    <p className="text-xs text-gray-600">Token: {token ? "Có" : "Không có"}</p>
+                                </div>
                             </div>
                         </div>
                     )}
