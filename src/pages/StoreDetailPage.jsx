@@ -59,7 +59,7 @@ const StoreDetailPage = () => {
         console.log('Sending payload:', payload);
 
         try {
-            const response = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Stores/${id}`, {
+            const response = await fetch(`https://decalxeapi-production.up.railway.app/api/Stores/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
