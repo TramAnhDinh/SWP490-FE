@@ -16,7 +16,7 @@ const StoreDetailPage = () => {
 
     const fetchStoreDetail = async () => {
         try {
-            const response = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Stores/${id}`, {
+            const response = await fetch(`https://decalxeapi-production.up.railway.app/api/Stores/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json'
