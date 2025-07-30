@@ -82,22 +82,48 @@ const StoreListPage = () => {
             return;
         }
 
+        if (!token) {
+            toast.error("Vui lòng đăng nhập để thực hiện thao tác này.");
+            navigate('/login');
+            return;
+        }
+
         setCreating(true);
 
         try {
+            console.log("Đang tạo store:", { storeName, address });
+            console.log("Token:", token ? token.substring(0, 20) + "..." : "Không có token");
+
             const response = await fetch("https://decalxeapi-production.up.railway.app/api/Stores", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({ storeName, address }),
             });
 
+            console.log("Response status:", response.status);
+
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData?.message || "Tạo cửa hàng thất bại.");
+                let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+
+                // Thử parse JSON response nếu có
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData?.message || errorMessage;
+                } catch (parseError) {
+                    console.log("Response không phải JSON, sử dụng text");
+                    const errorText = await response.text();
+                    errorMessage = errorText || errorMessage;
+                }
+
+                throw new Error(errorMessage);
             }
+
+            const result = await response.json();
+            console.log("Tạo store thành công:", result);
 
             toast.success("Tạo cửa hàng thành công!");
             setStoreName("");
@@ -106,7 +132,14 @@ const StoreListPage = () => {
             fetchStores();
         } catch (error) {
             console.error("Error creating store:", error);
-            toast.error(error.message || "Lỗi kết nối đến máy chủ.");
+
+            // Xử lý lỗi 401 - Unauthorized
+            if (error.message.includes('401')) {
+                toast.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+                navigate('/login');
+            } else {
+                toast.error(`Lỗi tạo cửa hàng: ${error.message}`);
+            }
         } finally {
             setCreating(false);
         }
@@ -118,22 +151,60 @@ const StoreListPage = () => {
     };
 
     const handleConfirmDelete = async () => {
+        if (!token) {
+            toast.error("Vui lòng đăng nhập để thực hiện thao tác này.");
+            navigate('/login');
+            return;
+        }
+
         try {
-            await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Stores/${selectedStoreId}`, {
+            console.log("Đang xóa store với ID:", selectedStoreId);
+            console.log("Token:", token ? token.substring(0, 20) + "..." : "Không có token");
+
+            const response = await fetch(`https://decalxeapi-production.up.railway.app/api/Stores/${selectedStoreId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             });
 
+            console.log("Response status:", response.status);
+            console.log("Response headers:", response.headers);
+
+            if (!response.ok) {
+                let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+
+                // Thử parse JSON response nếu có
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData?.message || errorMessage;
+                } catch (parseError) {
+                    console.log("Response không phải JSON, sử dụng text");
+                    const errorText = await response.text();
+                    errorMessage = errorText || errorMessage;
+                }
+
+                throw new Error(errorMessage);
+            }
+
+            console.log("Xóa store thành công");
             toast.success('Xóa cửa hàng thành công!');
             fetchStores();
             setShowConfirmDialog(false);
             setSelectedStoreId(null);
         } catch (error) {
             console.error('Error deleting store:', error);
-            toast.error('Lỗi khi xóa cửa hàng!');
+
+            // Xử lý lỗi 401 - Unauthorized
+            if (error.message.includes('401')) {
+                toast.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+                // Có thể redirect về trang login
+                navigate('/login');
+            } else {
+                toast.error(`Lỗi khi xóa cửa hàng: ${error.message}`);
+            }
         }
     };
 
@@ -419,6 +490,20 @@ const StoreListPage = () => {
                                     <p className="text-xs text-gray-600">Total stores: {stores.length}</p>
                                     <p className="text-xs text-gray-600">Search term: "{searchTerm}"</p>
                                     <p className="text-xs text-gray-600">Token: {token ? "Có" : "Không có"}</p>
+                                    <p className="text-xs text-gray-600">Token preview: {token ? token.substring(0, 20) + "..." : "N/A"}</p>
+                                    <p className="text-xs text-gray-600">API URL: https://decalxeapi-production.up.railway.app/api/Stores</p>
+                                    <button
+                                        onClick={fetchStores}
+                                        className="mt-2 px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+                                    >
+                                        Thử lại
+                                    </button>
+                                    <button
+                                        onClick={() => navigate('/login')}
+                                        className="mt-2 ml-2 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
+                                    >
+                                        Đăng nhập lại
+                                    </button>
                                 </div>
                             </div>
                         </div>
