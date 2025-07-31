@@ -28,15 +28,15 @@ const Register = () => {
 
   const getRoleLabel = (role) => {
     switch (role) {
-      case "ROLE_ADMIN":
+      case "ADMIN":
         return "Quản trị viên";
-      case "ROLE_MANAGER":
+      case "MANAGER":
         return "Quản lý";
-      case "ROLE_DESIGNER":
+      case "DESIGNER":
         return "Thiết kế viên";
-      case "ROLE_SALES":
+      case "SALES":
         return "Nhân viên bán hàng";
-      case "ROLE_TECHNICIAN":
+      case "TECHNICIAN":
         return "Kỹ thuật viên";
       default:
         return role;
@@ -45,15 +45,15 @@ const Register = () => {
 
   const getRoleIcon = (role) => {
     switch (role) {
-      case "ROLE_ADMIN":
+      case "ADMIN":
         return Shield;
-      case "ROLE_MANAGER":
+      case "MANAGER":
         return Users;
-      case "ROLE_DESIGNER":
+      case "DESIGNER":
         return Palette;
-      case "ROLE_SALES":
+      case "SALES":
         return ShoppingCart;
-      case "ROLE_TECHNICIAN":
+      case "TECHNICIAN":
         return Wrench;
       default:
         return User;
@@ -73,14 +73,14 @@ const Register = () => {
     const role = user.role;
     console.log("ROLE hiện tại:", role);
 
-    if (role === "ROLE_ADMIN" || role === "Admin") {
+    if (role === "ADMIN" || role === "Admin") {
       setAvailableRoles([
-        "ROLE_MANAGER",
-        "ROLE_DESIGNER",
-        "ROLE_SALES",
-        "ROLE_TECHNICIAN",
+        "MANAGER",
+        "DESIGNER",
+        "SALES",
+        "TECHNICIAN",
       ]);
-    } else if (role === "ROLE_MANAGER" || role === "Manager") {
+    } else if (role === "MANAGER" || role === "Manager") {
       setAvailableRoles([]);
     } else {
       setAvailableRoles([]);
@@ -114,7 +114,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "https://decalxeapi-backend-production.up.railway.app/api/Auth/register",
+        "https://decalxeapi-production.up.railway.app/api/Auth/register",
         {
           method: "POST",
           headers: {
