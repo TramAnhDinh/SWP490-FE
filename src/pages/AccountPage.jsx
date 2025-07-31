@@ -48,7 +48,7 @@ const AdminPage = () => {
 
     const fetchAccountDetail = async (id) => {
         try {
-            const response = await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Accounts/${id}`, {
+            const response = await fetch(`https://decalxeapi-production.up.railway.app/api/Accounts/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json'
@@ -75,7 +75,7 @@ const AdminPage = () => {
 
     const handleConfirmDelete = async () => {
         try {
-            await fetch(`https://decalxeapi-backend-production.up.railway.app/api/Accounts/${selectedAccountId}`, {
+            await fetch(`https://decalxeapi-production.up.railway.app/api/Accounts/${selectedAccountId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
