@@ -35,7 +35,7 @@ const EmployeeDetailPage = () => {
   const fetchEmployeeDetail = async () => {
     try {
       const res = await fetch(
-        `https://decalxeapi-backend-production.up.railway.app/api/employees/${employeeID}`,
+        `https://decalxeapi-production.up.railway.app/api/Employees/${employeeID}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -69,43 +69,43 @@ const EmployeeDetailPage = () => {
   };
 
   const handleUpdate = async (e) => {
-  e.preventDefault();
-  setUpdating(true);
+    e.preventDefault();
+    setUpdating(true);
 
-  const payload = {
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    phoneNumber: formData.phoneNumber,
-    email: formData.email,
-    storeID: formData.storeID
-  };
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+      storeID: formData.storeID
+    };
 
-  try {
-    const res = await fetch(
-      `https://decalxeapi-backend-production.up.railway.app/api/employees/${employeeID}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
+    try {
+      const res = await fetch(
+        `https://decalxeapi-production.up.railway.app/api/Employees/${employeeID}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+      if (!res.ok) {
+        const errorText = await res.text(); // xem chi tiết lỗi nếu có
+        console.error("Update error:", errorText);
+        throw new Error("Cập nhật thất bại.");
       }
-    );
-    if (!res.ok) {
-      const errorText = await res.text(); // xem chi tiết lỗi nếu có
-      console.error("Update error:", errorText);
-      throw new Error("Cập nhật thất bại.");
-    }
 
-    toast.success("Cập nhật thông tin thành công!");
-    navigate("/employees");
-  } catch (err) {
-    toast.error(err.message);
-  } finally {
-    setUpdating(false);
-  }
-};
+      toast.success("Cập nhật thông tin thành công!");
+      navigate("/employees");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setUpdating(false);
+    }
+  };
 
 
   if (loading) return <div className="text-center mt-10">Đang tải...</div>;

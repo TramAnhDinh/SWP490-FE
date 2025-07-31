@@ -18,7 +18,7 @@ const EmployeePage = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch("https://decalxeapi-backend-production.up.railway.app/api/employees", {
+      const response = await fetch("https://decalxeapi-production.up.railway.app/api/Employees", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -41,7 +41,7 @@ const EmployeePage = () => {
           <button
             onClick={async () => {
               try {
-                await fetch(`https://decalxeapi-backend-production.up.railway.app/api/employees/${id}`, {
+                await fetch(`https://decalxeapi-production.up.railway.app/api/Employees/${id}`, {
                   method: "DELETE",
                   headers: {
                     Authorization: `Bearer ${token}`
