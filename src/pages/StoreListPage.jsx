@@ -74,7 +74,7 @@ const StoreListPage = () => {
         }
     };
 
-    const handleCreateStore = async (e) => {
+   const handleCreateStore = async (e) => {
         e.preventDefault();
 
         if (!storeName || !address) {
@@ -144,6 +144,7 @@ const StoreListPage = () => {
             setCreating(false);
         }
     };
+
 
     const handleDelete = (storeID) => {
         setSelectedStoreId(storeID);

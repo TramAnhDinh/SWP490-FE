@@ -134,7 +134,7 @@ const Register = () => {
       }
 
       toast.success("Đăng ký thành công!");
-      setTimeout(() => navigate("/"), 1500);
+      setTimeout(() => navigate("/account"), 1500);
     } catch (err) {
       toast.error(err.message || "Lỗi kết nối đến máy chủ.");
     } finally {

@@ -16,7 +16,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 
-const AdminPage = () => {
+const AccountPage = () => {
     const token = useSelector((state) => state.user?.token);
     const [accounts, setAccounts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -428,4 +428,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default AccountPage;

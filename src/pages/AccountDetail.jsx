@@ -66,7 +66,7 @@ const AccountDetail = () => {
     }, [token, id]);
 
     const handleSave = async () => {
-        if (editedPassword === "" || editedUsername.trim() === "") {
+        if (editedUsername.trim() === "") {
             toast.error('Vui lòng nhập đầy đủ thông tin!');
             return;
         }
@@ -74,7 +74,7 @@ const AccountDetail = () => {
         const payload = {
             accountID: account.accountID,
             username: editedUsername,
-            passwordHash: editedPassword,
+            // passwordHash: editedPassword,
             isActive: editedStatus,
             roleID: account.roleID,
             role: {
@@ -82,8 +82,11 @@ const AccountDetail = () => {
                 roleName: account.roleName
             }
         };
-
-        console.log('Sending payload:', payload);
+        // Nếu có nhập mật khẩu thì thêm vào payload
+        if (editedPassword.trim() !== "") {
+            payload.passwordHash = editedPassword;
+        }
+        // console.log('Sending payload:', payload);
 
         try {
             const response = await fetch(`https://decalxeapi-production.up.railway.app/api/Accounts/${id}`, {

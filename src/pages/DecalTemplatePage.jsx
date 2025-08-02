@@ -147,7 +147,7 @@ const DecalTemplatePage = () => {
     const fetchDecals = async () => {
         setLoading(true);
         try {
-            const response = await fetch('https://decalxeapi-backend-production.up.railway.app/api/DecalTemplates', {
+            const response = await fetch('https://decalxeapi-production.up.railway.app/api/DecalTemplates', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const list = await response.json();
