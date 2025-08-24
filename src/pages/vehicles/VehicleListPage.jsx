@@ -5,6 +5,7 @@ import { Button, Input, Card, Badge, LoadingSpinner } from '../../components/com
 import { vehicleBrandService } from '../../services/vehicleBrands';
 import { vehicleModelService } from '../../services/vehicleModels';
 import { useQuery } from '@tanstack/react-query';
+import { authService } from '../../services/auth';
 
 const VehicleListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -163,12 +164,14 @@ const VehicleListPage = () => {
                       Xem
                     </Button>
                   </Link>
+                  {["Manager", "Sales", "Technician"].includes(authService.getUserRole()) && (       
                   <Link to={`/vehicles/brands/${brand.brandID}/edit`}>
                     <Button variant="outline" size="sm">
                       <Edit className="h-4 w-4 mr-1" />
                       Sửa
                     </Button>
                   </Link>
+                )}
                 </div>
                 
                 <Button

@@ -39,11 +39,11 @@ const navigation = [
   {
     name: 'Đơn hàng',
     icon: ShoppingCart,
-    roles: ['Admin', 'Manager', 'Sales', 'Technician'],
+    roles: ['Manager', 'Sales', 'Technician'],
     children: [
-      { name: 'Danh sách đơn hàng', href: '/orders' },
-      { name: 'Tạo đơn hàng mới', href: '/orders/create' },
-      { name: 'Theo dõi tiến độ', href: '/orders/tracking' },
+      { name: 'Danh sách đơn hàng', href: '/orders'},
+      { name: 'Tạo đơn hàng mới', href: '/orders/create', roles: ['Sales']},
+      { name: 'Theo dõi tiến độ', href: '/orders/tracking', roles: ['Sales', 'Manager']},
     ],
   },
   {
@@ -59,7 +59,7 @@ const navigation = [
   {
     name: 'Khách hàng',
     icon: Users,
-    roles: ['Admin', 'Manager', 'Sales'],
+    roles: ['Manager', 'Sales'],
     children: [
       { name: 'Danh sách khách hàng', href: '/customers' },
       // { name: 'Thêm khách hàng', href: '/customers/create' },
@@ -68,7 +68,7 @@ const navigation = [
   {
     name: 'Phương tiện',
     icon: Car,
-    roles: ['Admin'],
+    roles: ['Manager'],
     children: [
       { name: 'Danh sách xe', href: '/vehicles' },
       // { name: 'Thêm thương hiệu', href: '/vehicles/brands/create' },
@@ -101,7 +101,7 @@ const navigation = [
     roles: ['Admin'],
     children: [
       { name: 'Danh sách cửa hàng', href: '/stores' },
-      // { name: 'Thêm cửa hàng', href: '/stores/add' },
+      { name: 'Thêm cửa hàng', href: '/stores/add' },
     ],
   },
   {
@@ -110,6 +110,7 @@ const navigation = [
     roles: ['Admin'],
     children: [
       { name: 'Danh sách tài khoản', href: '/accounts' },
+      {name: 'Thêm tài khoản', href: '/accounts/add'}
     ],
   },
   {
@@ -338,24 +339,29 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                 {isExpanded && (
                   <div className="mt-1 space-y-1">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.name}
-                        to={child.href}
-                        className={cn(
-                          'group flex items-center pl-11 pr-3 py-2 text-sm font-medium rounded-md transition-colors duration-200',
-                          isActive(child.href)
-                            ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-500'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        )}
-                        onClick={() => {
-                          if (window.innerWidth < 1024) onClose();
-                        }}
-                      >
-                        {child.icon && <child.icon className="mr-2 h-4 w-4 flex-shrink-0" />}
-                        {child.name}
-                      </Link>
-                    ))}
+                    {item.children
+    .filter(
+      (child) =>
+        !child.roles || child.roles.includes(userRole) // lọc theo roles nếu có
+    )
+    .map((child) => (
+     <Link
+       key={child.name}
+        to={child.href}
+        className={cn(
+         'group flex items-center pl-11 pr-3 py-2 text-sm font-medium rounded-md transition-colors duration-200',
+          isActive(child.href)
+            ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-500'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+        )}
+        onClick={() => {
+          if (window.innerWidth < 1024) onClose();
+        }}
+      >
+        {child.icon && <child.icon className="mr-2 h-4 w-4 flex-shrink-0" />}
+        {child.name}
+          </Link>
+        ))}
                   </div>
                 )}
               </div>
