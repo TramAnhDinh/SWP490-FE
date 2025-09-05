@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -219,4 +217,4 @@ npm run preview
 2. Verify API server đang chạy
 3. Check timeout setting (10s default)
 4. Test API trực tiếp bằng Postman
->>>>>>> tinh
+
